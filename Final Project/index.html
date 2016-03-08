@@ -1,13 +1,101 @@
 <!DOCTYPE html>
+<html>
+<head>
 <meta charset="utf-8">
+<title>Point on a map D3</title>
+
+<script src="d3.v3.min.js" charset="utf-8"></script>
+<script src="topojson.v1.min.js"></script>
+
+<style type="text/css">
+  .feature {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1px;
+      stroke-linejoin: round;
+  }
+  .mesh {
+    fill: none;
+      stroke: lightgrey;
+      stroke-width: 2px;
+      stroke-linejoin: round;
+  }
+  h1 {
+    font-family: sans-serif;
+  }
+</style>
+</head>
 <body>
-<div id="tooltip"></div><!-- div to hold tooltip. -->
-<svg width="960" height="600" id="statesvg"></svg> <!-- svg to hold the map. -->
-<script src="uStates.js"></script> <!-- creates uStates. -->
-<script src="d3.v3.min.js"></script>
-<script>
-  uStates.draw("#statesvg");
-  debugger;
-  d3.select('#state').text('test')
+<script type="text/javascript">
+
+var width = 950,
+    height = 550;
+
+// set projection
+var projection = d3.geo.mercator();
+
+// create path variable
+var path = d3.geo.path()
+    .projection(projection);
+
+var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+var lineFunction = d3.svg.line()
+                  .x(function(d) { return d.x; })
+                  .y(function(d) { return d.y; })
+                  .interpolate("linear");
+
+function draw_states(topo){
+    states = topojson.feature(topo, topo.objects.states).features
+    // set projection parameters
+    projection
+      .scale(690)
+      .center([-106, 40])
+
+    // create svg variable
+  // add states from topojson
+  svg.selectAll("path")
+      .data(states).enter()
+      .append("path")
+      .attr("class", "feature")
+      .style("fill", "steelblue")
+      .attr("d", path);
+
+    // put boarder around states 
+    svg.append("path")
+      .datum(topojson.mesh(topo, topo.objects.states, function(a, b) { return a !== b; }))
+      .attr("class", "mesh")
+      .attr("d", path);
+};
+
+function draw_network(network_data){
+      // add circles to svg
+    var node = svg.selectAll(".node")
+      .data(d3.entries(network_data['GPS_lon_lat']))
+      .enter().append("g")
+      .attr("class", "node")
+      .append("circle")
+      .attr("cx", function (d) {console.log(projection(d['value'])); return projection(d['value'])[0]; })
+      .attr("cy", function (d) {return projection(d['value'])[1]; })
+      .attr("r", "4px")
+      .attr("fill", "red")
+
+/*    var connection = svg.selectAll('.connection')
+      .data(d3.entries(network_data['connections']))
+      .enter.append('g')
+      .attr('class','connection')
+      .append("line")
+      .attr("x1",function(d){return })
+      .attr("stroke", "blue")
+      .attr("stroke-width", 2)
+      .attr("fill", "none");*/
+
+}
+d3.json("us.json", draw_states);
+d3.json("datamodel.json", draw_network)
 </script>
+    
 </body>
+</html>
