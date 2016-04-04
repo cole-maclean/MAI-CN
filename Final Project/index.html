@@ -7,65 +7,66 @@
 <script src="d3.v3.min.js" charset="utf-8"></script>
 <script src="topojson.v1.min.js"></script>
 
-<style type="text/css">
-  .feature {
-    fill: none;
-    stroke: grey;
-    stroke-width: 1px;
-      stroke-linejoin: round;
-  }
-  .mesh {
-    fill: none;
-      stroke: lightgrey;
-      stroke-width: 2px;
-      stroke-linejoin: round;
-  }
-  h1 {
-    font-family: sans-serif;
-  }
+<style>
+
+.graticule {
+  fill: none;
+  stroke: #777;
+  stroke-width: .5px;
+  stroke-opacity: .5;
+}
+
+.land {
+  fill: steelblue
+}
+
+.boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
 </style>
-</head>
 <body>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="//d3js.org/topojson.v1.min.js"></script>
+<script>
 
-<script type="text/javascript">
+var width = 1500,
+    height = 650;
 
-var width = 950,
-    height = 550;
+var projection = d3.geo.mercator()
+    .center([70, 45])
+    .scale(650)
+    .rotate([-180,0]);
 
-// set projection
-var projection = d3.geo.mercator();
-
-// create path variable
 var path = d3.geo.path()
     .projection(projection);
 
-projection
-  .scale(690)
-  .center([-106, 40])
+var graticule = d3.geo.graticule();
 
 var svg = d3.select("body").append("svg")
-        .attr("width", width)
-        .attr("height", height);
+    .attr("width", width)
+    .attr("height", height);
 
-function draw_states(topo){
-    states = topojson.feature(topo, topo.objects.states).features
-    // set projection parameters
+svg.append("path")
+    .datum(graticule)
+    .attr("class", "graticule")
+    .attr("d", path);
 
-    // create svg variable
-  // add states from topojson
-  svg.selectAll("path")
-      .data(states).enter()
-      .append("path")
-      .attr("class", "feature")
-      .style("fill", "steelblue")
+function draw_world(error, world) {
+  if (error) throw error;
+
+  svg.insert("path", ".graticule")
+      .datum(topojson.feature(world, world.objects.land))
+      .attr("class", "land")
       .attr("d", path);
 
-    // put boarder around states 
-    svg.append("path")
-      .datum(topojson.mesh(topo, topo.objects.states, function(a, b) { return a !== b; }))
-      .attr("class", "mesh")
+  svg.insert("path", ".graticule")
+      .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+      .attr("class", "boundary")
       .attr("d", path);
-    };
+};
 
 
 function draw_network(network_data){
@@ -90,8 +91,8 @@ function draw_network(network_data){
     .attr("x2", function(d){return projection(d['lon_lat_2'])[0]})
     .attr("y2", function(d){return projection(d['lon_lat_2'])[1]})
 }
-
-d3.json("us.json", draw_states)
+d3.select(self.frameElement).style("height", height + "px");
+d3.json("world.json", draw_world)
 d3.json("connections.json", draw_network)
 
 </script>
