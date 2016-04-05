@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Tesla's USA Super Charger Network</title>
+<title>Tesla Super Charger Network</title>
 
 <script src="d3.v3.min.js" charset="utf-8"></script>
 <script src="topojson.v1.min.js"></script>
@@ -32,11 +32,11 @@
 <script src="//d3js.org/topojson.v1.min.js"></script>
 <script>
 
-var width = 1500,
-    height = 650;
+var width = 1300,
+    height = 600;
 
 var projection = d3.geo.mercator()
-    .center([70, 45])
+    .center([70, 48])
     .scale(650)
     .rotate([-180,0]);
 
@@ -93,7 +93,7 @@ function draw_network(network_data){
 }
 d3.select(self.frameElement).style("height", height + "px");
 d3.json("world.json", draw_world)
-d3.json("connections.json", draw_network)
+d3.json("slim_network.json", draw_network)
 
 </script>
     
