@@ -70,17 +70,7 @@ function draw_world(error, world) {
 
 
 function draw_network(network_data){
-    var node = svg.selectAll(".node")
-    .data(network_data['nodes'])
-    .enter().append("g")
-    .attr("class","node")
-    .append("circle")
-    .attr("cx", function (d) {return projection(d['GPS_lon_lat'])[0]; })
-    .attr("cy", function (d) {return projection(d['GPS_lon_lat'])[1]; })
-    .attr("r", "4px")
-    .attr("fill", "red")
-
-    var connection = svg.selectAll(".connection")
+      var connection = svg.selectAll(".connection")
     .data(network_data['links'])
     .enter().append("g")
     .attr("class","connection")
@@ -90,6 +80,16 @@ function draw_network(network_data){
     .attr("y1", function(d){return projection(d['lon_lat_1'])[1]})
     .attr("x2", function(d){return projection(d['lon_lat_2'])[0]})
     .attr("y2", function(d){return projection(d['lon_lat_2'])[1]})
+
+    var node = svg.selectAll(".node")
+    .data(network_data['nodes'])
+    .enter().append("g")
+    .attr("class","node")
+    .append("circle")
+    .attr("cx", function (d) {return projection(d['GPS_lon_lat'])[0]; })
+    .attr("cy", function (d) {return projection(d['GPS_lon_lat'])[1]; })
+    .attr("r", "4px")
+    .attr("fill", "red")
 }
 d3.select(self.frameElement).style("height", height + "px");
 d3.json("world.json", draw_world)
