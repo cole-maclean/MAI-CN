@@ -25,20 +25,14 @@
 
 </style>
 <body>
-  <p>
-    <label for="nNode" 
-           style="display: inline-block; width: 240px; text-align: right">
-           Super Charger Count = <span id="nNode-value">…</span>
-    </label>
-    <input type="range" min="1" max="150" id="nNode">
-  </p>
-
+      <form name="nodeForm" onSubmit="return handleClick()">
+        <input type="text" id="node" placeholder="1">
+      </form>
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script src="//d3js.org/topojson.v1.min.js"></script>
 <script>
 //initial page load call
-function draw(network_data){
-
+function draw(world,network_data,div_name){
     //page update function called after any changes
   var width = 1300,
       height = 600;
@@ -53,7 +47,7 @@ function draw(network_data){
 
   var graticule = d3.geo.graticule();
 
-  var svg = d3.select("body").append("svg")
+  var svg = d3.select(div_name).append("svg")
       .attr("width", width)
       .attr("height", height);
 
@@ -62,48 +56,40 @@ function draw(network_data){
       .attr("class", "graticule")
       .attr("d", path);
 
-  d3.select("#nNode")
-  .attr("max",network_data["nodes"].length)
-  .attr("value",network_data["nodes"].length)
-  .on("input", function() {
-    update(+this.value);
-  });
+    function handleClick(event){
+        console.log(document.getElementById("node").value)
+        update(document.getElementById("node").value)
+        return false;
+    }
 
-    function update(input_node){
-      input_node = +input_node // convert string input to int for equality evaluations
+    function update(node){
+      node = +node // convert string input to int for equality evaluations
 
-      d3.selectAll(".connection").remove();
+      d3.selectAll('.connection').remove();
+      d3.selectAll('.node').remove();
 
       var connection = svg.selectAll(".connection")
       .data(network_data['links'])
-      .enter().append("g")
+       .enter().append("g")
+      .filter(function(d) { return !d.SC_index <= node; })
       .attr("class","connection")
-      .filter(function(d) { return +d.second_node <= input_node; })
       .append("line")
-      .attr("class","link")
       .style("stroke","black")
       .attr("x1", function(d){return projection(d['lon_lat_1'])[0]})
       .attr("y1", function(d){return projection(d['lon_lat_1'])[1]})
       .attr("x2", function(d){return projection(d['lon_lat_2'])[0]})
       .attr("y2", function(d){return projection(d['lon_lat_2'])[1]})
 
-      // connection.exit().remove();
-
-      d3.selectAll(".node").remove();
-
       var node = svg.selectAll(".node")
-      .data(network_data['nodes'], function(d){ return d.SC_index})
+      .data(network_data['nodes'])
       .enter().append("g")
+      .filter(function(d) { return !d.latest_node <= node; })
       .attr("class","node")
-      .filter(function(d) { return +d.SC_index <= input_node; })
       .append("circle")
-      .attr("class","SC")
       .attr("cx", function (d) {return projection(d['GPS_lon_lat'])[0]; })
       .attr("cy", function (d) {return projection(d['GPS_lon_lat'])[1]; })
       .attr("r", "2px")
-      .attr("fill", "red")
-
-      d3.select("#nNode-value").text(input_node);
+      .attr("fill", "red")   
     }
 
   //build discipline selection pane
@@ -123,8 +109,8 @@ function draw(network_data){
 
     d3.json("world.json", draw_world)
     //initial draw call on page load
-    update(network_data["nodes"].length)
+    update("1")
+
   };
 d3.json("network.json", draw)
 </script>
-</body>
