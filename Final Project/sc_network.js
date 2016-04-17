@@ -1,5 +1,5 @@
 
-function draw(world_data,network_data,div_name){
+function draw(world_data,network_data,div_name,highlight_list){
 
     //page update function called after any changes
   var width = 1300,
@@ -63,15 +63,18 @@ function draw(world_data,network_data,div_name){
       .attr("cx", function (d) {return projection(d['GPS_lon_lat'])[0]; })
       .attr("cy", function (d) {return projection(d['GPS_lon_lat'])[1]; })
       .attr("r", "2px")
-      .attr("fill", "red")
-
+      .attr("fill", function(d) {
+        if (highlight_list.indexOf(d["geohash"]) == -1){
+          return "red";
+        } else {
+          return "green";
+        }
+      })
       d3.select("#nNode-value").text(input_node);
     }
 
   //build discipline selection pane
   function draw_world(world) {
-    debugger;
-
     svg.insert("path", ".graticule")
         .datum(topojson.feature(world, world.objects.land))
         .attr("class", "land")
