@@ -121,10 +121,10 @@ function draw(network_data){
         .attr("d", path);
     }
 
-    d3.json("world.json", draw_world)
+    d3.json("Final Project/world.json", draw_world)
     //initial draw call on page load
     update(network_data["nodes"].length)
   };
-d3.json("network.json", draw)
+d3.json("Final Project/network.json", draw)
 </script>
 </body>
