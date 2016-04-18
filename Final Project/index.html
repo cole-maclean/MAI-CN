@@ -123,7 +123,7 @@ function draw(network_data){
 
     d3.json("world.json", draw_world)
     //initial draw call on page load
-    update(network_data["nodes"].length)
+    update(network_data["nodes"].length);
   };
 d3.json("network.json", draw)
 </script>

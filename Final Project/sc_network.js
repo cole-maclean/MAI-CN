@@ -34,7 +34,7 @@ function draw(world_data,network_data,div_name,highlight_list){
     function update(input_node){
       input_node = +input_node // convert string input to int for equality evaluations
 
-      d3.selectAll(".connection").remove();
+      d3.select(div_name).selectAll(".connection").remove();
 
       var connection = svg.selectAll(".connection")
       .data(network_data['links'])
@@ -51,7 +51,7 @@ function draw(world_data,network_data,div_name,highlight_list){
 
       // connection.exit().remove();
 
-      d3.selectAll(".node").remove();
+      d3.select(div_name).selectAll(".node").remove();
 
       var node = svg.selectAll(".node")
       .data(network_data['nodes'], function(d){ return d.SC_index})
@@ -67,7 +67,7 @@ function draw(world_data,network_data,div_name,highlight_list){
         if (highlight_list.indexOf(d["geohash"]) == -1){
           return "red";
         } else {
-          return "green";
+          return "yellow";
         }
       })
       d3.select("#nNode-value").text(input_node);
@@ -85,8 +85,7 @@ function draw(world_data,network_data,div_name,highlight_list){
         .attr("class", "boundary")
         .attr("d", path);
     }
-    debugger;
     draw_world(world_data);
     //initial draw call on page load
-    update(network_data["nodes"].length);
+    update("280");//hard coded initial node count because it breaks graphic when filtering network not on SC_index order
   };
