@@ -166,6 +166,7 @@ class SCNetwork(nx.Graph):
 				self.expansion_cache[node].append(self.efficiency() - cur_eff)
 				self.expansion_cache[node].append(self.breadth() - cur_breadth)
 				self.expansion_cache[node].append(self.density() - cur_dens)
+				self.expansion_cache[node].append(float(POP_DICT[node]['population'])/tot_pop) #added normalized city population to utilities matrix, can be used as tie breaker
 				node_utility = np.array(self.expansion_cache[node])*np.array(util_params)
 				self.expansion_cache[node].append(sum(node_utility))
 				self.remove_node(node)

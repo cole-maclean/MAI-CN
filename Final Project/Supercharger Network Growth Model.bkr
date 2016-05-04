@@ -121,22 +121,23 @@
                     "import json",
                     "import networkx as nx",
                     "from networkx.readwrite import json_graph",
-                    "import scnetwork",
+                    "#import scnetwork",
                     "import geo_tools",
                     "import operator",
                     "import numpy as np",
-                    "from scipy.optimize import minimize",
+                    "from scipy import optimize",
                     "",
-                    "#importlib.reload(scnetwork)"
+                    "importlib.reload(scnetwork)"
                 ]
             },
             "output": {
                 "state": {},
-                "selectedType": "Hidden",
+                "selectedType": "Html",
                 "pluginName": "Python3",
                 "shellId": "E405B4461AB446FB87FF32CE84FB88B1",
-                "elapsedTime": 930,
-                "height": 53
+                "elapsedTime": 886,
+                "height": 53,
+                "result": "<div class=\"output_subarea output_text\"><pre>&lt;module 'scnetwork' from 'C:\\\\Users\\\\macle\\\\Desktop\\\\UPC Masters\\\\Semester 1\\\\CN\\\\MAI-CN\\\\Final Project\\\\scnetwork.py'&gt;</pre></div>"
             },
             "evaluatorReader": true,
             "lineCount": 15
@@ -165,31 +166,10 @@
                 "selectedType": "Hidden",
                 "pluginName": "Python3",
                 "shellId": "E405B4461AB446FB87FF32CE84FB88B1",
-                "elapsedTime": 1154
+                "elapsedTime": 897
             },
             "evaluatorReader": true,
             "lineCount": 11
-        },
-        {
-            "id": "coded2yN5I",
-            "type": "code",
-            "evaluator": "Python3",
-            "input": {
-                "body": [
-                    "def callback(xk):",
-                    "    print (xk)",
-                    "    "
-                ]
-            },
-            "output": {
-                "state": {},
-                "selectedType": "Hidden",
-                "pluginName": "Python3",
-                "shellId": "47538C30369F4D78A1DC93DD8B75B6D0",
-                "elapsedTime": 341
-            },
-            "evaluatorReader": true,
-            "lineCount": 3
         },
         {
             "id": "codenlC6ob",
@@ -197,9 +177,9 @@
             "evaluator": "Python3",
             "input": {
                 "body": [
-                    "x0 = np.array([1000,10,0.05,100000])",
-                    "res = minimize(simulate_networks, x0, method='nelder-mead',callback=callback,",
-                    "                options={'xtol': 0.1, 'disp': True})",
+                    "x0 = np.array([0.5,0.15,0.15,0.15,0.05]) #[connectivity, efficiency, breadth,desity,city_pop]",
+                    "res = minimize(simulate_networks, x0, method='nelder-mead',",
+                    "                options={'xtol': 0.05, 'disp': True})",
                     ""
                 ]
             },
@@ -210,7 +190,7 @@
                     "outputdata": [
                         {
                             "type": "out",
-                            "value": "new iteration\n76\n77"
+                            "value": "[ 0.5   0.15  0.15  0.15  0.05]\n76\n77"
                         },
                         {
                             "type": "out",
@@ -286,6 +266,30 @@
                         },
                         {
                             "type": "out",
+                            "value": "\n96"
+                        },
+                        {
+                            "type": "out",
+                            "value": "\n97"
+                        },
+                        {
+                            "type": "out",
+                            "value": "\n98"
+                        },
+                        {
+                            "type": "out",
+                            "value": "\n99"
+                        },
+                        {
+                            "type": "out",
+                            "value": "\n100"
+                        },
+                        {
+                            "type": "out",
+                            "value": "\n0.7662000000000004"
+                        },
+                        {
+                            "type": "out",
                             "value": "\n"
                         }
                     ],
@@ -293,15 +297,16 @@
                         "type": "BeakerDisplay",
                         "innertype": "Error",
                         "object": [
-                            "Interrupted"
+                            "&apos;float&apos; object is not subscriptable",
+                            "&apos;float&apos; object is not subscriptable<br><span  class=\"ansired\">---------------------------------------------------------------------------</span><br><span  class=\"ansired\">TypeError</span>                                 Traceback (most recent call last)<br><span  class=\"ansigreen\">&lt;ipython-input-1-7c370fb893f2&gt;</span> in <span  class=\"ansicyan\">&lt;module&gt;<span  class=\"ansiblue\">()</span>\n<span  class=\"ansigreen\">      1</span> x0 <span  class=\"ansiyellow\">=</span> np<span  class=\"ansiyellow\">.</span>array<span  class=\"ansiyellow\">(</span><span  class=\"ansiyellow\">[</span><span  class=\"ansicyan\">0.5</span><span  class=\"ansiyellow\">,</span><span  class=\"ansicyan\">0.15</span><span  class=\"ansiyellow\">,</span><span  class=\"ansicyan\">0.15</span><span  class=\"ansiyellow\">,</span><span  class=\"ansicyan\">0.15</span><span  class=\"ansiyellow\">,</span><span  class=\"ansicyan\">0.05</span><span  class=\"ansiyellow\">]</span><span  class=\"ansiyellow\">)</span> <span  class=\"ansired\">#[connectivity, efficiency, breadth,desity,city_pop]</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">----&gt; 2<span  class=\"ansiyellow\"> </span>res <span  class=\"ansiyellow\">=</span> optimize<span  class=\"ansiyellow\">.</span>fmin_l_bfgs_b<span  class=\"ansiyellow\">(</span>simulate_networks<span  class=\"ansiyellow\">,</span> x0<span  class=\"ansiyellow\">,</span>epsilon<span  class=\"ansiyellow\">=</span><span  class=\"ansicyan\">0.01</span><span  class=\"ansiyellow\">,</span>maxiter<span  class=\"ansiyellow\">=</span><span  class=\"ansicyan\">100</span><span  class=\"ansiyellow\">,</span>iprint <span  class=\"ansiyellow\">=</span> <span  class=\"ansicyan\">99</span><span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansigreen\">C:\\Users\\macle\\AppData\\Local\\Programs\\Python\\Python35\\lib\\site-packages\\scipy\\optimize\\lbfgsb.py</span> in <span  class=\"ansicyan\">fmin_l_bfgs_b<span  class=\"ansiblue\">(func, x0, fprime, args, approx_grad, bounds, m, factr, pgtol, epsilon, iprint, maxfun, maxiter, disp, callback, maxls)</span>\n<span  class=\"ansigreen\">    191</span> <span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    192</span>     res = _minimize_lbfgsb(fun, x0, args=args, jac=jac, bounds=bounds,\n<span  class=\"ansigreen\">--&gt; 193<span  class=\"ansiyellow\">                            **opts)\n</span><span  class=\"ansigreen\">    194</span>     d = {&apos;grad&apos;: res[&apos;jac&apos;],\n<span  class=\"ansigreen\">    195</span>          <span  class=\"ansiblue\">&apos;task&apos;</span><span  class=\"ansiyellow\">:</span> res<span  class=\"ansiyellow\">[</span><span  class=\"ansiblue\">&apos;message&apos;</span><span  class=\"ansiyellow\">]</span><span  class=\"ansiyellow\">,</span><span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansigreen\">C:\\Users\\macle\\AppData\\Local\\Programs\\Python\\Python35\\lib\\site-packages\\scipy\\optimize\\lbfgsb.py</span> in <span  class=\"ansicyan\">_minimize_lbfgsb<span  class=\"ansiblue\">(fun, x0, args, jac, bounds, disp, maxcor, ftol, gtol, eps, maxfun, maxiter, iprint, callback, maxls, **unknown_options)</span>\n<span  class=\"ansigreen\">    328</span>                 <span  class=\"ansired\"># minimization routine wants f and g at the current x</span><span  class=\"ansiyellow\"></span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    329</span>                 <span  class=\"ansired\"># Overwrite f and g:</span><span  class=\"ansiyellow\"></span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">--&gt; 330<span  class=\"ansiyellow\">                 </span>f<span  class=\"ansiyellow\">,</span> g <span  class=\"ansiyellow\">=</span> func_and_grad<span  class=\"ansiyellow\">(</span>x<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    331</span>         <span  class=\"ansigreen\">elif</span> task_str<span  class=\"ansiyellow\">.</span>startswith<span  class=\"ansiyellow\">(</span><span  class=\"ansiblue\">b&apos;NEW_X&apos;</span><span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">:</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    332</span>             <span  class=\"ansired\"># new iteration</span><span  class=\"ansiyellow\"></span><span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansigreen\">C:\\Users\\macle\\AppData\\Local\\Programs\\Python\\Python35\\lib\\site-packages\\scipy\\optimize\\lbfgsb.py</span> in <span  class=\"ansicyan\">func_and_grad<span  class=\"ansiblue\">(x)</span>\n<span  class=\"ansigreen\">    276</span>     <span  class=\"ansigreen\">else</span><span  class=\"ansiyellow\">:</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    277</span>         <span  class=\"ansigreen\">def</span> func_and_grad<span  class=\"ansiyellow\">(</span>x<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">:</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">--&gt; 278<span  class=\"ansiyellow\">             </span>f <span  class=\"ansiyellow\">=</span> fun<span  class=\"ansiyellow\">(</span>x<span  class=\"ansiyellow\">,</span> <span  class=\"ansiyellow\">*</span>args<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    279</span>             g <span  class=\"ansiyellow\">=</span> jac<span  class=\"ansiyellow\">(</span>x<span  class=\"ansiyellow\">,</span> <span  class=\"ansiyellow\">*</span>args<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    280</span>             <span  class=\"ansigreen\">return</span> f<span  class=\"ansiyellow\">,</span> g<span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansigreen\">C:\\Users\\macle\\AppData\\Local\\Programs\\Python\\Python35\\lib\\site-packages\\scipy\\optimize\\optimize.py</span> in <span  class=\"ansicyan\">function_wrapper<span  class=\"ansiblue\">(*wrapper_args)</span>\n<span  class=\"ansigreen\">    287</span>     <span  class=\"ansigreen\">def</span> function_wrapper<span  class=\"ansiyellow\">(</span><span  class=\"ansiyellow\">*</span>wrapper_args<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">:</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    288</span>         ncalls<span  class=\"ansiyellow\">[</span><span  class=\"ansicyan\">0</span><span  class=\"ansiyellow\">]</span> <span  class=\"ansiyellow\">+=</span> <span  class=\"ansicyan\">1</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">--&gt; 289<span  class=\"ansiyellow\">         <span  class=\"ansigreen\">return</span> function<span  class=\"ansiyellow\">(</span><span  class=\"ansiyellow\">*</span><span  class=\"ansiyellow\">(</span>wrapper_args <span  class=\"ansiyellow\">+</span> args<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    290</span> <span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    291</span>     <span  class=\"ansigreen\">return</span> ncalls<span  class=\"ansiyellow\">,</span> function_wrapper<span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansigreen\">C:\\Users\\macle\\AppData\\Local\\Programs\\Python\\Python35\\lib\\site-packages\\scipy\\optimize\\optimize.py</span> in <span  class=\"ansicyan\">__call__<span  class=\"ansiblue\">(self, x, *args)</span>\n<span  class=\"ansigreen\">     62</span>         self<span  class=\"ansiyellow\">.</span>x <span  class=\"ansiyellow\">=</span> numpy<span  class=\"ansiyellow\">.</span>asarray<span  class=\"ansiyellow\">(</span>x<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">.</span>copy<span  class=\"ansiyellow\">(</span><span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">     63</span>         fg <span  class=\"ansiyellow\">=</span> self<span  class=\"ansiyellow\">.</span>fun<span  class=\"ansiyellow\">(</span>x<span  class=\"ansiyellow\">,</span> <span  class=\"ansiyellow\">*</span>args<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">---&gt; 64<span  class=\"ansiyellow\">         </span>self<span  class=\"ansiyellow\">.</span>jac <span  class=\"ansiyellow\">=</span> fg<span  class=\"ansiyellow\">[</span><span  class=\"ansicyan\">1</span><span  class=\"ansiyellow\">]</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">     65</span>         <span  class=\"ansigreen\">return</span> fg<span  class=\"ansiyellow\">[</span><span  class=\"ansicyan\">0</span><span  class=\"ansiyellow\">]</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">     66</span> <span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansired\">TypeError</span>: &apos;float&apos; object is not subscriptable"
                         ]
                     }
                 },
                 "selectedType": "Results",
                 "pluginName": "Python3",
-                "shellId": "47538C30369F4D78A1DC93DD8B75B6D0",
-                "elapsedTime": 662898,
-                "height": 719
+                "shellId": "E405B4461AB446FB87FF32CE84FB88B1",
+                "elapsedTime": 535329,
+                "height": 1603
             },
             "evaluatorReader": true,
             "lineCount": 4
@@ -313,11 +318,14 @@
             "input": {
                 "body": [
                     "current_network = scnetwork.SCNetwork(G)",
+                    "test_learn = (G.subgraph([node for node,data in G.nodes_iter(data=True)",
+                    "                if int(data[\"SC_index\"]) <=100]))",
                     "sub_graphs = current_network.all_sub_graphs()",
                     "def simulate_networks(util_params):",
+                    "    print (util_params)",
                     "    seed_net = scnetwork.SCNetwork(sub_graphs[75])",
-                    "    simulated_network = build_network(seed_net,util_params,len(current_network))",
-                    "    similarity_score = network_similarity_score(current_network,simulated_network)",
+                    "    simulated_network = build_network(seed_net,util_params,len(test_learn))",
+                    "    similarity_score = network_similarity_score(test_learn,simulated_network)",
                     "    print (similarity_score)",
                     "    return -similarity_score",
                     "    "
@@ -331,38 +339,7 @@
                 "elapsedTime": 546
             },
             "evaluatorReader": true,
-            "lineCount": 9
-        },
-        {
-            "id": "code9hZBUx",
-            "type": "code",
-            "evaluator": "Python3",
-            "input": {
-                "body": [
-                    "current_network.geo_area()"
-                ]
-            },
-            "output": {
-                "state": {},
-                "result": {
-                    "type": "Results",
-                    "outputdata": [
-                        {
-                            "type": "out",
-                            "value": "[(24.725172, -81.051135), (26.108976, -80.250883), (26.48564, -81.787136), (26.778172, -80.112944), (27.313023, -80.406688), (27.601444, -80.822187), (27.940831, -82.323648), (28.514874, -81.500214), (28.766853, -96.978988), (29.108566, -81.034569), (29.140985, -82.19395), (29.690062, -96.537725), (29.827692, -97.979677), (29.920735, -81.416337), (29.980741, -95.421697), (30.181429, -82.679701), (30.200741, -93.248171), (30.266552, -89.760156), (30.423892, -91.154637), (30.510935, -84.247838), (30.675347, -88.11901), (30.716158, -95.565944), (30.720702, -86.116677), (30.790764, -81.663729), (31.448583, -83.534472), (31.58224, -97.10915), (31.855989, -86.635765), (32.068577, -96.448229), (32.135507, -81.212767), (32.274159, -90.151048), (32.625185, -85.446314), (32.726686, -114.619093), (32.763723, -115.531517), (32.833428, -83.625557), (32.87888, -111.681742), (32.902137, -117.193489), (32.943969, -112.733506), (33.231403, -97.166419), (33.443011, -112.556876), (33.485858, -80.475763), (33.498458, -117.6632), (33.661314, -114.242174), (33.70278, -117.934127), (33.741484, -116.215019), (33.792089, -84.393747), (33.793217, -84.285379), (33.894294, -118.367379), (33.921068, -118.330054), (33.93129, -116.820041), (33.970233, -112.73165), (33.986779, -118.390213), (34.113592, -117.529406), (34.174712, -118.300826), (34.179106, -97.165632), (34.238654, -119.177398), (34.327131, -112.118432), (34.61456, -120.188387), (34.667629, -79.002343), (34.825895, -82.306973), (34.849129, -117.085446), (34.850835, -114.624329), (34.922962, -110.145558), (34.947013, -104.647997), (34.98734, -118.94623), (34.994793, -78.135673), (35.037458, -85.196339), (35.068595, -118.174576), (35.108962, -106.612794), (35.153963, -103.722539), (35.174272, -111.66328), (35.191331, -114.065592), (35.192198, -101.933371), (35.226765, -100.24836), (35.341213, -80.766023), (35.400105, -119.397796), (35.461704, -97.651445), (35.48656, -120.66633), (35.505278, -108.828094), (35.531391, -82.604487), (35.53859, -98.66012), (35.610687, -115.388028), (35.621267, -105.204598), (35.646461, -117.812629), (35.850587, -76.756116), (35.90229, -84.150775), (35.969209, -86.804641), (35.972874, -77.84687), (36.07079, -79.511211), (36.165906, -115.138655), (36.25415, -120.237896), (36.289315, -97.325935), (36.60059, -118.061916), (36.616759, -121.844014), (36.748445, -78.103764), (36.766371, -108.144047), (36.835455, -119.91058), (36.858614, -76.206015), (36.913718, -116.754371), (36.945795, -81.054406), (37.02493, -121.56542), (37.125336, -113.60272), (37.134228, -104.519962), (37.14916, -84.11385), (37.415344, -122.076607), (37.493447, -121.945654), (37.544632, -122.290188), (37.60878, -97.33314), (37.625553, -109.473842), (37.644544, -118.965875), (37.669832, -77.461419), (37.702359, -121.92593), (37.782622, -121.228683), (37.796979, -79.419007), (38.017955, -84.420664), (38.211846, -85.673087), (38.242693, -122.625049), (38.249149, -112.652524), (38.366645, -121.958136), (38.401648, -75.564818), (38.573122, -109.552368), (38.64082, -77.29633), (38.64258, -121.18806), (38.695341, -119.547596), (38.771208, -121.266149), (38.782139, -90.532862), (38.788161, -112.083841), (38.800537, -121.210485), (38.837573, -104.824907), (38.877342, -97.618699), (38.900543, -99.319142), (38.958728, -92.252464), (38.993577, -110.140513), (39.00496, -78.337836), (39.023876, -77.144352), (39.040814, -94.369265), (39.044199, -95.76046), (39.090758, -108.604325), (39.137048, -88.563736), (39.148694, -123.20787), (39.224429, -84.383415), (39.268842, -103.708604), (39.321865, -120.1621), (39.326253, -101.725171), (39.327507, -120.207373), (39.443345, -87.331737), (39.55268, -107.340168), (39.563776, -104.875651), (39.601655, -110.83131), (39.605859, -77.733324), (39.631457, -106.070816), (39.662313, -75.69198), (39.678397, -111.840704), (39.702444, -86.079687), (39.748868, -89.67119), (39.775259, -104.794674), (39.85675, -84.276458), (39.877253, -83.063448), (39.926454, -122.198393), (40.017383, -79.077117), (40.060757, -80.602874), (40.146209, -88.259884), (40.179476, -118.472135), (40.195539, -74.641375), (40.226272, -74.093538), (40.321021, -74.488254), (40.416993, -86.812428), (40.41701, -74.444085), (40.508497, -88.985575), (40.544814, -74.333248), (40.588102, -75.559904), (40.66319, -73.793192), (40.683982, -80.10839), (40.684486, -112.268818), (40.7209, -111.888395), (40.726668, -84.071932), (40.738399, -114.058998), (40.799839, -73.515267), (40.836301, -115.790859), (40.957429, -74.07408), (40.958847, -117.746497), (41.040555, -73.673445), (41.041538, -73.671661), (41.045431, -75.312244), (41.068167, -73.504659), (41.080599, -73.461905), (41.161085, -104.804955), (41.220005, -95.836123), (41.245814, -73.008988), (41.246232, -73.010529), (41.310233, -122.317278), (41.313663, -81.517018), (41.499775, -74.071261), (41.519027, -81.493345), (41.57835, -83.66465), (41.584927, -87.721062), (41.660517, -71.497242), (41.699048, -85.000326), (41.70995, -112.198576), (41.7174, -86.1887), (41.722672, -72.759717), (41.760671, -88.309184), (41.781242, -70.540271), (41.890732, -87.654125), (42.056357, -86.456352), (42.130914, -72.621435), (42.145553, -75.901755), (42.17434, -87.816626), (42.203608, -71.832516), (42.236034, -71.178634), (42.238789, -82.550873), (42.240687, -83.766265), (42.243896, -88.978877), (42.460883, -123.324124), (42.518715, -87.950428), (42.598103, -114.456183), (42.710356, -73.819109), (42.75625, -104.45267), (42.838443, -72.565798), (42.895182, -70.869351), (42.915523, -85.533929), (42.968673, -78.696128), (43.102516, -76.187475), (43.109521, -71.477006), (43.110063, -71.475087), (43.111918, -80.738804), (43.113878, -75.206857), (43.12669, -89.306896), (43.591886, -116.279015), (43.624616, -72.324692), (43.63385, -95.595647), (43.68606, -93.357721), (43.701129, -98.0445), (43.740222, -79.322389), (43.749912, -87.747073), (43.795551, -90.059358), (43.879042, -91.188428), (43.886915, -100.716887), (43.97171, -78.285431), (44.082605, -123.037471), (44.105601, -103.212569), (44.267307, -76.503291), (44.282551, -85.403096), (44.29301, -105.526628), (44.341123, -79.678975), (44.34787, -69.786088), (44.463327, -73.180184), (44.737025, -122.152108), (44.77083, -91.43711), (44.782849, -117.812422), (44.804565, -106.956363), (45.023665, -74.747845), (45.15313, -122.881254), (45.403531, -122.294242), (45.496185, -73.658793), (45.611964, -121.208526), (45.648679, -118.678968), (45.700078, -111.062569), (45.733716, -108.604573), (45.836945, -109.944577), (45.899084, -72.51942), (45.981226, -112.507161), (46.009592, -92.93155), (46.198085, -119.162734), (46.378868, -94.256413), (46.729732, -122.977454), (46.784467, -92.10232), (46.912545, -114.031824), (46.976918, -120.54162), (47.116294, -118.368328), (47.192149, -114.888901), (47.708479, -116.794283), (48.509772, -122.338625), (49.37829, -121.442822), (49.736901, -123.134573), (49.885795, -119.429273), (50.655233, -120.368302), (51.009594, -118.218857), (51.100208, -115.359179), (51.31325, -116.974152), (52.251899, -113.814659)]\n"
-                        }
-                    ],
-                    "payload": "<div class=\"output_subarea output_text\"><pre>35942202.54761964</pre></div>"
-                },
-                "selectedType": "Results",
-                "pluginName": "Python3",
-                "shellId": "E405B4461AB446FB87FF32CE84FB88B1",
-                "elapsedTime": 203,
-                "dataresult": 35942202.54761964,
-                "height": 71
-            },
-            "evaluatorReader": true,
-            "lineCount": 1
+            "lineCount": 12
         },
         {
             "id": "codeKCYkyX",
@@ -387,8 +364,8 @@
                 "state": {},
                 "selectedType": "Hidden",
                 "pluginName": "Python3",
-                "shellId": "47538C30369F4D78A1DC93DD8B75B6D0",
-                "elapsedTime": 343
+                "shellId": "E405B4461AB446FB87FF32CE84FB88B1",
+                "elapsedTime": 302
             },
             "evaluatorReader": true,
             "lineCount": 11
@@ -403,7 +380,7 @@
                     "    for i in range(len(seed_network),network_length+1):",
                     "        print (i)",
                     "        seed_network.expansion_utilities(utility_params)",
-                    "        best_node = max(seed_network.expansion_cache, key= lambda x: seed_network.expansion_cache[x][4])",
+                    "        best_node = max(seed_network.expansion_cache, key= lambda x: seed_network.expansion_cache[x][5])#gets node with max utility (utility is index 5 in expansion_cache)",
                     "        seed_network.add_SC(best_node)",
                     "        seed_network.expansion_cache.pop(best_node)",
                     "    return seed_network",
@@ -414,8 +391,8 @@
                 "state": {},
                 "selectedType": "Hidden",
                 "pluginName": "Python3",
-                "shellId": "47538C30369F4D78A1DC93DD8B75B6D0",
-                "elapsedTime": 337,
+                "shellId": "E405B4461AB446FB87FF32CE84FB88B1",
+                "elapsedTime": 297,
                 "height": 341,
                 "dataresult": [
                     -93658.5320941355,
