@@ -33,6 +33,17 @@
     ],
     "cells": [
         {
+            "id": "markdownLqS2pZ",
+            "type": "markdown",
+            "body": [
+                "<h3>Shower Thoughts</h3>",
+                "",
+                "If you get the first next node wrong, does that doom the entire network simulation?  ",
+                "Rational for starting guess util params - study of util magnatudes [10 con, 1 eff, 10 breadth, 10 dens, 1000 pop] and assumption of percent contributions from each util (50% con, 15% eff, 15% breadth, 15% dens, 5% city pop)"
+            ],
+            "evaluatorReader": false
+        },
+        {
             "id": "markdownk6S0sc",
             "type": "markdown",
             "body": [
@@ -123,6 +134,7 @@
                     "from networkx.readwrite import json_graph",
                     "#import scnetwork",
                     "import geo_tools",
+                    "import geohash",
                     "import operator",
                     "import numpy as np",
                     "from scipy import optimize",
@@ -135,12 +147,12 @@
                 "selectedType": "Html",
                 "pluginName": "Python3",
                 "shellId": "E405B4461AB446FB87FF32CE84FB88B1",
-                "elapsedTime": 886,
+                "elapsedTime": 1201,
                 "height": 53,
                 "result": "<div class=\"output_subarea output_text\"><pre>&lt;module 'scnetwork' from 'C:\\\\Users\\\\macle\\\\Desktop\\\\UPC Masters\\\\Semester 1\\\\CN\\\\MAI-CN\\\\Final Project\\\\scnetwork.py'&gt;</pre></div>"
             },
             "evaluatorReader": true,
-            "lineCount": 15
+            "lineCount": 16
         },
         {
             "id": "codeZXDSV7",
@@ -166,7 +178,7 @@
                 "selectedType": "Hidden",
                 "pluginName": "Python3",
                 "shellId": "E405B4461AB446FB87FF32CE84FB88B1",
-                "elapsedTime": 897
+                "elapsedTime": 1228
             },
             "evaluatorReader": true,
             "lineCount": 11
@@ -177,9 +189,9 @@
             "evaluator": "Python3",
             "input": {
                 "body": [
-                    "x0 = np.array([0.5,0.15,0.15,0.15,0.05]) #[connectivity, efficiency, breadth,desity,city_pop]",
+                    "x0 = np.array([5,0.15,1.5,1.5,50]) #[connectivity, efficiency, breadth,desity,city_pop]",
                     "res = minimize(simulate_networks, x0, method='nelder-mead',",
-                    "                options={'xtol': 0.05, 'disp': True})",
+                    "                options={'disp': True, 'maxiter': 100, 'return_all': False, 'xtol': 0.05, 'ftol': 0.01})",
                     ""
                 ]
             },
@@ -190,123 +202,23 @@
                     "outputdata": [
                         {
                             "type": "out",
-                            "value": "[ 0.5   0.15  0.15  0.15  0.05]\n76\n77"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n78"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n79"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n80"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n81"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n82"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n83"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n84"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n85"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n86"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n87"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n88"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n89"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n90"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n91"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n92"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n93"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n94"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n95"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n96"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n97"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n98"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n99"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n100"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n0.7662000000000004"
-                        },
-                        {
-                            "type": "out",
-                            "value": "\n"
+                            "value": "[  5.     0.15   1.5    1.5   50.  ]\n"
                         }
                     ],
                     "payload": {
                         "type": "BeakerDisplay",
                         "innertype": "Error",
                         "object": [
-                            "&apos;float&apos; object is not subscriptable",
-                            "&apos;float&apos; object is not subscriptable<br><span  class=\"ansired\">---------------------------------------------------------------------------</span><br><span  class=\"ansired\">TypeError</span>                                 Traceback (most recent call last)<br><span  class=\"ansigreen\">&lt;ipython-input-1-7c370fb893f2&gt;</span> in <span  class=\"ansicyan\">&lt;module&gt;<span  class=\"ansiblue\">()</span>\n<span  class=\"ansigreen\">      1</span> x0 <span  class=\"ansiyellow\">=</span> np<span  class=\"ansiyellow\">.</span>array<span  class=\"ansiyellow\">(</span><span  class=\"ansiyellow\">[</span><span  class=\"ansicyan\">0.5</span><span  class=\"ansiyellow\">,</span><span  class=\"ansicyan\">0.15</span><span  class=\"ansiyellow\">,</span><span  class=\"ansicyan\">0.15</span><span  class=\"ansiyellow\">,</span><span  class=\"ansicyan\">0.15</span><span  class=\"ansiyellow\">,</span><span  class=\"ansicyan\">0.05</span><span  class=\"ansiyellow\">]</span><span  class=\"ansiyellow\">)</span> <span  class=\"ansired\">#[connectivity, efficiency, breadth,desity,city_pop]</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">----&gt; 2<span  class=\"ansiyellow\"> </span>res <span  class=\"ansiyellow\">=</span> optimize<span  class=\"ansiyellow\">.</span>fmin_l_bfgs_b<span  class=\"ansiyellow\">(</span>simulate_networks<span  class=\"ansiyellow\">,</span> x0<span  class=\"ansiyellow\">,</span>epsilon<span  class=\"ansiyellow\">=</span><span  class=\"ansicyan\">0.01</span><span  class=\"ansiyellow\">,</span>maxiter<span  class=\"ansiyellow\">=</span><span  class=\"ansicyan\">100</span><span  class=\"ansiyellow\">,</span>iprint <span  class=\"ansiyellow\">=</span> <span  class=\"ansicyan\">99</span><span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansigreen\">C:\\Users\\macle\\AppData\\Local\\Programs\\Python\\Python35\\lib\\site-packages\\scipy\\optimize\\lbfgsb.py</span> in <span  class=\"ansicyan\">fmin_l_bfgs_b<span  class=\"ansiblue\">(func, x0, fprime, args, approx_grad, bounds, m, factr, pgtol, epsilon, iprint, maxfun, maxiter, disp, callback, maxls)</span>\n<span  class=\"ansigreen\">    191</span> <span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    192</span>     res = _minimize_lbfgsb(fun, x0, args=args, jac=jac, bounds=bounds,\n<span  class=\"ansigreen\">--&gt; 193<span  class=\"ansiyellow\">                            **opts)\n</span><span  class=\"ansigreen\">    194</span>     d = {&apos;grad&apos;: res[&apos;jac&apos;],\n<span  class=\"ansigreen\">    195</span>          <span  class=\"ansiblue\">&apos;task&apos;</span><span  class=\"ansiyellow\">:</span> res<span  class=\"ansiyellow\">[</span><span  class=\"ansiblue\">&apos;message&apos;</span><span  class=\"ansiyellow\">]</span><span  class=\"ansiyellow\">,</span><span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansigreen\">C:\\Users\\macle\\AppData\\Local\\Programs\\Python\\Python35\\lib\\site-packages\\scipy\\optimize\\lbfgsb.py</span> in <span  class=\"ansicyan\">_minimize_lbfgsb<span  class=\"ansiblue\">(fun, x0, args, jac, bounds, disp, maxcor, ftol, gtol, eps, maxfun, maxiter, iprint, callback, maxls, **unknown_options)</span>\n<span  class=\"ansigreen\">    328</span>                 <span  class=\"ansired\"># minimization routine wants f and g at the current x</span><span  class=\"ansiyellow\"></span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    329</span>                 <span  class=\"ansired\"># Overwrite f and g:</span><span  class=\"ansiyellow\"></span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">--&gt; 330<span  class=\"ansiyellow\">                 </span>f<span  class=\"ansiyellow\">,</span> g <span  class=\"ansiyellow\">=</span> func_and_grad<span  class=\"ansiyellow\">(</span>x<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    331</span>         <span  class=\"ansigreen\">elif</span> task_str<span  class=\"ansiyellow\">.</span>startswith<span  class=\"ansiyellow\">(</span><span  class=\"ansiblue\">b&apos;NEW_X&apos;</span><span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">:</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    332</span>             <span  class=\"ansired\"># new iteration</span><span  class=\"ansiyellow\"></span><span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansigreen\">C:\\Users\\macle\\AppData\\Local\\Programs\\Python\\Python35\\lib\\site-packages\\scipy\\optimize\\lbfgsb.py</span> in <span  class=\"ansicyan\">func_and_grad<span  class=\"ansiblue\">(x)</span>\n<span  class=\"ansigreen\">    276</span>     <span  class=\"ansigreen\">else</span><span  class=\"ansiyellow\">:</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    277</span>         <span  class=\"ansigreen\">def</span> func_and_grad<span  class=\"ansiyellow\">(</span>x<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">:</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">--&gt; 278<span  class=\"ansiyellow\">             </span>f <span  class=\"ansiyellow\">=</span> fun<span  class=\"ansiyellow\">(</span>x<span  class=\"ansiyellow\">,</span> <span  class=\"ansiyellow\">*</span>args<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    279</span>             g <span  class=\"ansiyellow\">=</span> jac<span  class=\"ansiyellow\">(</span>x<span  class=\"ansiyellow\">,</span> <span  class=\"ansiyellow\">*</span>args<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    280</span>             <span  class=\"ansigreen\">return</span> f<span  class=\"ansiyellow\">,</span> g<span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansigreen\">C:\\Users\\macle\\AppData\\Local\\Programs\\Python\\Python35\\lib\\site-packages\\scipy\\optimize\\optimize.py</span> in <span  class=\"ansicyan\">function_wrapper<span  class=\"ansiblue\">(*wrapper_args)</span>\n<span  class=\"ansigreen\">    287</span>     <span  class=\"ansigreen\">def</span> function_wrapper<span  class=\"ansiyellow\">(</span><span  class=\"ansiyellow\">*</span>wrapper_args<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">:</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    288</span>         ncalls<span  class=\"ansiyellow\">[</span><span  class=\"ansicyan\">0</span><span  class=\"ansiyellow\">]</span> <span  class=\"ansiyellow\">+=</span> <span  class=\"ansicyan\">1</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">--&gt; 289<span  class=\"ansiyellow\">         <span  class=\"ansigreen\">return</span> function<span  class=\"ansiyellow\">(</span><span  class=\"ansiyellow\">*</span><span  class=\"ansiyellow\">(</span>wrapper_args <span  class=\"ansiyellow\">+</span> args<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    290</span> <span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    291</span>     <span  class=\"ansigreen\">return</span> ncalls<span  class=\"ansiyellow\">,</span> function_wrapper<span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansigreen\">C:\\Users\\macle\\AppData\\Local\\Programs\\Python\\Python35\\lib\\site-packages\\scipy\\optimize\\optimize.py</span> in <span  class=\"ansicyan\">__call__<span  class=\"ansiblue\">(self, x, *args)</span>\n<span  class=\"ansigreen\">     62</span>         self<span  class=\"ansiyellow\">.</span>x <span  class=\"ansiyellow\">=</span> numpy<span  class=\"ansiyellow\">.</span>asarray<span  class=\"ansiyellow\">(</span>x<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">.</span>copy<span  class=\"ansiyellow\">(</span><span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">     63</span>         fg <span  class=\"ansiyellow\">=</span> self<span  class=\"ansiyellow\">.</span>fun<span  class=\"ansiyellow\">(</span>x<span  class=\"ansiyellow\">,</span> <span  class=\"ansiyellow\">*</span>args<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">---&gt; 64<span  class=\"ansiyellow\">         </span>self<span  class=\"ansiyellow\">.</span>jac <span  class=\"ansiyellow\">=</span> fg<span  class=\"ansiyellow\">[</span><span  class=\"ansicyan\">1</span><span  class=\"ansiyellow\">]</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">     65</span>         <span  class=\"ansigreen\">return</span> fg<span  class=\"ansiyellow\">[</span><span  class=\"ansicyan\">0</span><span  class=\"ansiyellow\">]</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">     66</span> <span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansired\">TypeError</span>: &apos;float&apos; object is not subscriptable"
+                            "max() arg is an empty sequence",
+                            "max() arg is an empty sequence<br><span  class=\"ansired\">---------------------------------------------------------------------------</span><br><span  class=\"ansired\">ValueError</span>                                Traceback (most recent call last)<br><span  class=\"ansigreen\">&lt;ipython-input-1-be3ca63dcc32&gt;</span> in <span  class=\"ansicyan\">&lt;module&gt;<span  class=\"ansiblue\">()</span>\n<span  class=\"ansigreen\">      1</span> x0 <span  class=\"ansiyellow\">=</span> np<span  class=\"ansiyellow\">.</span>array<span  class=\"ansiyellow\">(</span><span  class=\"ansiyellow\">[</span><span  class=\"ansicyan\">5</span><span  class=\"ansiyellow\">,</span><span  class=\"ansicyan\">0.15</span><span  class=\"ansiyellow\">,</span><span  class=\"ansicyan\">1.5</span><span  class=\"ansiyellow\">,</span><span  class=\"ansicyan\">1.5</span><span  class=\"ansiyellow\">,</span><span  class=\"ansicyan\">50</span><span  class=\"ansiyellow\">]</span><span  class=\"ansiyellow\">)</span> <span  class=\"ansired\">#[connectivity, efficiency, breadth,desity,city_pop]</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">      2</span> res = minimize(simulate_networks, x0, method=&apos;nelder-mead&apos;,\n<span  class=\"ansigreen\">----&gt; 3<span  class=\"ansiyellow\">                 options={&apos;disp&apos;: True, &apos;maxiter&apos;: 100, &apos;return_all&apos;: False, &apos;xtol&apos;: 0.05, &apos;ftol&apos;: 0.01})\n</span><br><span  class=\"ansigreen\">C:\\Users\\macle\\AppData\\Local\\Programs\\Python\\Python35\\lib\\site-packages\\scipy\\optimize\\_minimize.py</span> in <span  class=\"ansicyan\">minimize<span  class=\"ansiblue\">(fun, x0, args, method, jac, hess, hessp, bounds, constraints, tol, callback, options)</span>\n<span  class=\"ansigreen\">    433</span>                       callback=callback, **options)\n<span  class=\"ansigreen\">    434</span>     <span  class=\"ansigreen\">elif</span> meth <span  class=\"ansiyellow\">==</span> <span  class=\"ansiblue\">&apos;nelder-mead&apos;</span><span  class=\"ansiyellow\">:</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">--&gt; 435<span  class=\"ansiyellow\">         <span  class=\"ansigreen\">return</span> _minimize_neldermead<span  class=\"ansiyellow\">(</span>fun<span  class=\"ansiyellow\">,</span> x0<span  class=\"ansiyellow\">,</span> args<span  class=\"ansiyellow\">,</span> callback<span  class=\"ansiyellow\">,</span> <span  class=\"ansiyellow\">**</span>options<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    436</span>     <span  class=\"ansigreen\">elif</span> meth <span  class=\"ansiyellow\">==</span> <span  class=\"ansiblue\">&apos;powell&apos;</span><span  class=\"ansiyellow\">:</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    437</span>         <span  class=\"ansigreen\">return</span> _minimize_powell<span  class=\"ansiyellow\">(</span>fun<span  class=\"ansiyellow\">,</span> x0<span  class=\"ansiyellow\">,</span> args<span  class=\"ansiyellow\">,</span> callback<span  class=\"ansiyellow\">,</span> <span  class=\"ansiyellow\">**</span>options<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansigreen\">C:\\Users\\macle\\AppData\\Local\\Programs\\Python\\Python35\\lib\\site-packages\\scipy\\optimize\\optimize.py</span> in <span  class=\"ansicyan\">_minimize_neldermead<span  class=\"ansiblue\">(func, x0, args, callback, xtol, ftol, maxiter, maxfev, disp, return_all, **unknown_options)</span>\n<span  class=\"ansigreen\">    437</span>     <span  class=\"ansigreen\">if</span> retall<span  class=\"ansiyellow\">:</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    438</span>         allvecs <span  class=\"ansiyellow\">=</span> <span  class=\"ansiyellow\">[</span>sim<span  class=\"ansiyellow\">[</span><span  class=\"ansicyan\">0</span><span  class=\"ansiyellow\">]</span><span  class=\"ansiyellow\">]</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">--&gt; 439<span  class=\"ansiyellow\">     </span>fsim<span  class=\"ansiyellow\">[</span><span  class=\"ansicyan\">0</span><span  class=\"ansiyellow\">]</span> <span  class=\"ansiyellow\">=</span> func<span  class=\"ansiyellow\">(</span>x0<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    440</span>     nonzdelt <span  class=\"ansiyellow\">=</span> <span  class=\"ansicyan\">0.05</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    441</span>     zdelt <span  class=\"ansiyellow\">=</span> <span  class=\"ansicyan\">0.00025</span><span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansigreen\">C:\\Users\\macle\\AppData\\Local\\Programs\\Python\\Python35\\lib\\site-packages\\scipy\\optimize\\optimize.py</span> in <span  class=\"ansicyan\">function_wrapper<span  class=\"ansiblue\">(*wrapper_args)</span>\n<span  class=\"ansigreen\">    287</span>     <span  class=\"ansigreen\">def</span> function_wrapper<span  class=\"ansiyellow\">(</span><span  class=\"ansiyellow\">*</span>wrapper_args<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">:</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    288</span>         ncalls<span  class=\"ansiyellow\">[</span><span  class=\"ansicyan\">0</span><span  class=\"ansiyellow\">]</span> <span  class=\"ansiyellow\">+=</span> <span  class=\"ansicyan\">1</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">--&gt; 289<span  class=\"ansiyellow\">         <span  class=\"ansigreen\">return</span> function<span  class=\"ansiyellow\">(</span><span  class=\"ansiyellow\">*</span><span  class=\"ansiyellow\">(</span>wrapper_args <span  class=\"ansiyellow\">+</span> args<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    290</span> <span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">    291</span>     <span  class=\"ansigreen\">return</span> ncalls<span  class=\"ansiyellow\">,</span> function_wrapper<span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansigreen\">&lt;ipython-input-1-67ab9333f27d&gt;</span> in <span  class=\"ansicyan\">simulate_networks<span  class=\"ansiblue\">(util_params)</span>\n<span  class=\"ansigreen\">      7</span>     print <span  class=\"ansiyellow\">(</span>util_params<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">      8</span>     seed_net <span  class=\"ansiyellow\">=</span> scnetwork<span  class=\"ansiyellow\">.</span>SCNetwork<span  class=\"ansiyellow\">(</span>sub_graphs<span  class=\"ansiyellow\">[</span><span  class=\"ansicyan\">75</span><span  class=\"ansiyellow\">]</span><span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">----&gt; 9<span  class=\"ansiyellow\">     </span>simulated_network <span  class=\"ansiyellow\">=</span> build_network<span  class=\"ansiyellow\">(</span>seed_net<span  class=\"ansiyellow\">,</span>util_params<span  class=\"ansiyellow\">,</span>len<span  class=\"ansiyellow\">(</span>current_network<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">     10</span>     similarity_score <span  class=\"ansiyellow\">=</span> network_similarity_score<span  class=\"ansiyellow\">(</span>current_network<span  class=\"ansiyellow\">,</span>simulated_network<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">     11</span>     print <span  class=\"ansiyellow\">(</span>similarity_score<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansigreen\">&lt;ipython-input-1-281a0baa0542&gt;</span> in <span  class=\"ansicyan\">build_network<span  class=\"ansiblue\">(seed_network, utility_params, network_length)</span>\n<span  class=\"ansigreen\">      2</span>     <span  class=\"ansigreen\">for</span> i <span  class=\"ansigreen\">in</span> range<span  class=\"ansiyellow\">(</span>len<span  class=\"ansiyellow\">(</span>seed_network<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">,</span>network_length<span  class=\"ansiyellow\">+</span><span  class=\"ansicyan\">1</span><span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\">:</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">      3</span>         seed_network<span  class=\"ansiyellow\">.</span>expansion_utilities<span  class=\"ansiyellow\">(</span>utility_params<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">----&gt; 4<span  class=\"ansiyellow\">         </span>best_node <span  class=\"ansiyellow\">=</span> max<span  class=\"ansiyellow\">(</span>seed_network<span  class=\"ansiyellow\">.</span>expansion_cache<span  class=\"ansiyellow\">,</span> key<span  class=\"ansiyellow\">=</span> <span  class=\"ansigreen\">lambda</span> x<span  class=\"ansiyellow\">:</span> seed_network<span  class=\"ansiyellow\">.</span>expansion_cache<span  class=\"ansiyellow\">[</span>x<span  class=\"ansiyellow\">]</span><span  class=\"ansiyellow\">[</span><span  class=\"ansicyan\">5</span><span  class=\"ansiyellow\">]</span><span  class=\"ansiyellow\">)</span><span  class=\"ansired\">#gets node with max utility (utility is index 5 in expansion_cache)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">      5</span>         seed_network<span  class=\"ansiyellow\">.</span>add_SC<span  class=\"ansiyellow\">(</span>best_node<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<span  class=\"ansigreen\">      6</span>         seed_network<span  class=\"ansiyellow\">.</span>expansion_cache<span  class=\"ansiyellow\">.</span>pop<span  class=\"ansiyellow\">(</span>best_node<span  class=\"ansiyellow\">)</span><span  class=\"ansiyellow\"></span>\n<br><span  class=\"ansired\">ValueError</span>: max() arg is an empty sequence"
                         ]
                     }
                 },
                 "selectedType": "Results",
                 "pluginName": "Python3",
                 "shellId": "E405B4461AB446FB87FF32CE84FB88B1",
-                "elapsedTime": 535329,
-                "height": 1603
+                "elapsedTime": 1867443,
+                "height": 803
             },
             "evaluatorReader": true,
             "lineCount": 4
@@ -318,17 +230,17 @@
             "input": {
                 "body": [
                     "current_network = scnetwork.SCNetwork(G)",
-                    "test_learn = (G.subgraph([node for node,data in G.nodes_iter(data=True)",
-                    "                if int(data[\"SC_index\"]) <=100]))",
+                    "test_learn_G = (G.subgraph([node for node,data in G.nodes_iter(data=True)",
+                    "                if int(data[\"SC_index\"]) <=95]))",
+                    "test_learn_network = scnetwork.SCNetwork(test_learn_G)",
                     "sub_graphs = current_network.all_sub_graphs()",
                     "def simulate_networks(util_params):",
                     "    print (util_params)",
                     "    seed_net = scnetwork.SCNetwork(sub_graphs[75])",
-                    "    simulated_network = build_network(seed_net,util_params,len(test_learn))",
-                    "    similarity_score = network_similarity_score(test_learn,simulated_network)",
+                    "    simulated_network = build_network(seed_net,util_params,len(current_network))",
+                    "    similarity_score = network_similarity_score(current_network,simulated_network)",
                     "    print (similarity_score)",
-                    "    return -similarity_score",
-                    "    "
+                    "    return -similarity_score   "
                 ]
             },
             "output": {
@@ -336,7 +248,7 @@
                 "selectedType": "Hidden",
                 "pluginName": "Python3",
                 "shellId": "E405B4461AB446FB87FF32CE84FB88B1",
-                "elapsedTime": 546
+                "elapsedTime": 617
             },
             "evaluatorReader": true,
             "lineCount": 12
@@ -351,11 +263,8 @@
                     "    score = 0",
                     "    ref_network_length = len(ref_network)",
                     "    for ref_node,ref_data in ref_network.nodes_iter(data=True):",
-                    "        for check_node,check_data in check_network.nodes_iter(data=True):",
-                    "            if ref_node[0:4] == check_node[0:4]: #check if we can find the ref_node in the check_network using geohash precision of 4 ie +/-20Kms.",
-                    "                score = score + (1-abs(int(ref_data[\"SC_index\"]) - int(check_data[\"SC_index\"]))/ref_network_length)/ref_network_length #calcuation produces some error beacuse",
-                    "                                                                                                                                       #multiple nodes within geohash precision",
-                    "                                                                                                                                       #of 4 can exist",
+                    "            if ref_node[0:4] in geohash.expand(check_node[0:4]): #check if we can find the ref_node in the check_network using geohash.expand precision of 4 ie +/-20Kms.",
+                    "                score = score + (1-abs(int(ref_data[\"SC_index\"]) - int(check_data[\"SC_index\"]))/ref_network_length)/ref_network_length",
                     "                break ",
                     "    return score"
                 ]
@@ -365,10 +274,10 @@
                 "selectedType": "Hidden",
                 "pluginName": "Python3",
                 "shellId": "E405B4461AB446FB87FF32CE84FB88B1",
-                "elapsedTime": 302
+                "elapsedTime": 501
             },
             "evaluatorReader": true,
-            "lineCount": 11
+            "lineCount": 8
         },
         {
             "id": "codeoVOLcN",
@@ -378,9 +287,12 @@
                 "body": [
                     "def build_network(seed_network,utility_params,network_length):",
                     "    for i in range(len(seed_network),network_length+1):",
-                    "        print (i)",
                     "        seed_network.expansion_utilities(utility_params)",
-                    "        best_node = max(seed_network.expansion_cache, key= lambda x: seed_network.expansion_cache[x][5])#gets node with max utility (utility is index 5 in expansion_cache)",
+                    "        if seed_network.expansion_cache:",
+                    "            best_node = max(seed_network.expansion_cache, key= lambda x: seed_network.expansion_cache[x][5])#gets node with max utility (utility is index 5 in expansion_cache)",
+                    "        else:",
+                    "            print (\"no expansion cities found at node \" + str(i))",
+                    "            return seed_network",
                     "        seed_network.add_SC(best_node)",
                     "        seed_network.expansion_cache.pop(best_node)",
                     "    return seed_network",
@@ -392,7 +304,7 @@
                 "selectedType": "Hidden",
                 "pluginName": "Python3",
                 "shellId": "E405B4461AB446FB87FF32CE84FB88B1",
-                "elapsedTime": 297,
+                "elapsedTime": 327,
                 "height": 341,
                 "dataresult": [
                     -93658.5320941355,
@@ -453,7 +365,7 @@
                 ]
             },
             "evaluatorReader": true,
-            "lineCount": 9
+            "lineCount": 12
         }
     ],
     "namespace": {

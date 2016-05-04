@@ -1,5 +1,5 @@
 MAX_RANGE = 346
-MAJOR_CITY_POP = 50000
+MAJOR_CITY_POP = 80000
 
 import networkx as nx
 import geo_tools
@@ -141,8 +141,7 @@ class SCNetwork(nx.Graph):
 			unseen_major_cities = [city_gh for city_gh in major_cities if city_gh not in city_ghs]
 			close_city_ghs = geo_tools.get_close_ghs(node,unseen_major_cities,2,MAX_RANGE)
 			for city_gh in close_city_ghs:
-				if self.SC_population(city_gh) >= 0.99*newest_pop:
-					city_ghs.append(city_gh)
+				city_ghs.append(city_gh)
 		return city_ghs
 
 	def expansion_utilities(self,util_params):
