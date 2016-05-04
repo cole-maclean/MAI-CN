@@ -92,8 +92,8 @@ class SCNetwork(nx.Graph):
 		node_GPS_list = [(data["lat"],data["lon"]) for node,data in self.nodes_iter(data=True)]
 		sort_lat_GPS = sorted(node_GPS_list,key=itemgetter(0))
 		sort_lon_GPS = sorted(node_GPS_list,key=itemgetter(1))
-		NS_dist = geo_tools.haversine(sort_lat_GPS[0][0],0,sort_lat_GPS[-1][0],0)
-		WE_dist = geo_tools.haversine(sort_lon_GPS[0][1],0,sort_lon_GPS[-1][1],0)
+		NS_dist = geo_tools.haversine(-100,sort_lat_GPS[0][0],-100,sort_lat_GPS[-1][0])
+		WE_dist = geo_tools.haversine(sort_lon_GPS[0][1],50,sort_lon_GPS[-1][1],50)
 		return NS_dist*WE_dist*math.pi
 
 	def largest_subcomponent(self):
@@ -117,19 +117,19 @@ class SCNetwork(nx.Graph):
 	def efficiency(self):
 		max_sg = self.largest_subcomponent()
 		if len(max_sg) > 1:
-			return (math.sqrt(max_sg.geo_area()/math.pi))/nx.average_shortest_path_length(max_sg)
+			return (math.sqrt(max_sg.geo_area()/math.pi))/nx.average_shortest_path_length(max_sg)/(MAX_RANGE*3) #Efficieny normalized by the theoretical max efficiency of traveling 3x the max range with 2 SC's
 		return 0
 
 	def breadth(self):
 		max_sg = self.largest_subcomponent()#get the maximum sub_graph component
-		return max_sg.geo_area()
+		return max_sg.geo_area()/(2762*6425*math.pi) #breadth normalized by maximum theoretical network breadth using extreme North America geographical points
 
 	def density(self):
 		max_sg = self.largest_subcomponent()#get the maximum sub_graph component
 		G_area = max_sg.geo_area()
 		if G_area ==0:
 			return 0
-		return len(max_sg)/G_area
+		return (len(max_sg)/G_area)*100 #denisty normalized to 1 SC for every 100km^2 in the network
 
 	def SC_expansion_search(self):
 		city_ghs =[]

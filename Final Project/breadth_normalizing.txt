@@ -1,0 +1,4 @@
+N:https://tools.wmflabs.org/geohack/geohack.php?pagename=List_of_extreme_points_of_the_United_States&params=49_23_04.1_N_95_9_12.2_W_region:US-MN&title=Northwest+Angle
+S: https://tools.wmflabs.org/geohack/geohack.php?pagename=List_of_extreme_points_of_the_United_States&params=24_32_38.724_N_81_48_17.658_W_region:US-FL_type:landmark&title=Key+West%2C+FL
+E: https://tools.wmflabs.org/geohack/geohack.php?pagename=List_of_extreme_points_of_the_United_States&params=44_48_55.4_N_66_56_59.2_W_&title=West+Quoddy+Head
+W: https://tools.wmflabs.org/geohack/geohack.php?pagename=List_of_extreme_points_of_the_United_States&params=48_9_51_N_124_43_59_W_region:US-WA_type:landmark&title=Cape+Alava
