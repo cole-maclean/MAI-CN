@@ -6,6 +6,7 @@ import geo_tools
 from operator import itemgetter
 import math
 import geohash
+import numpy as np
 
 POP_DICT = geo_tools.load_pop_dict()
 #generate list of unique geohash "squares" of size dictated by GH_PRECISION and use this to build dict of populations grouped by the unique geohash "squares"
@@ -16,10 +17,23 @@ tot_pop = sum(list(sub_pop_dict.values()))
 class SCNetwork(nx.Graph):
 	def __init__(self,network_data=None):
 		nx.Graph.__init__(self,network_data)
+		self.expansion_cache = {}
 
 	#Network Metadata
 	def newest_node(self):
 		return max(self.nodes(),key=lambda n: int(self.node[n]['SC_index']))
+
+	def reverse_node_lookup(self,SC_indexes):
+		nodes = []
+		for node,data in self.nodes_iter(data=True):
+			if data["SC_index"] in SC_indexes:
+				nodes.append(node)
+		return nodes 
+
+	def all_sub_graphs(self):
+		return ([self.subgraph([node for node,data in self.nodes_iter(data=True)
+								   if int(data["SC_index"]) <= node_count + 1])
+					 for node_count in range(self.number_of_nodes())])
 
 	def add_SC(self,node_gh):
 		if node_gh not in self.nodes():
@@ -68,7 +82,7 @@ class SCNetwork(nx.Graph):
 			return 0 
 
 	#population/geographic tools
-	def SC_population(self,node_gh):
+	def SC_population(self,node_gh):#function uses geohash precision of 3 (ie radius of 73km) and sums population within this radius
 		total_close_pop = (sum([data['population'] for gh,data in POP_DICT.items()
 					if gh[0:3] in geohash.expand(node_gh[0:3])]))
 		return total_close_pop
@@ -87,14 +101,14 @@ class SCNetwork(nx.Graph):
 
 			#calculate the unique sum total populatition of a network by developing the set of represented geohashes in the network and performing a lookup in the gh_pop_dict
 	#for the respective population, normalized by the total population in the gh_pop_dict
-	def pop_penetration(self):
+	def penetration(self):
 		G_sub_ghs = list(set([gh[0:3] for gh in self.nodes_iter()]))
 		tot_graph_pop = sum([sub_pop_dict[sub_gh] for sub_gh in G_sub_ghs if sub_gh in sub_ghs])
 		return tot_graph_pop/tot_pop
 
 	def connectivity(self):
 		max_sg = self.largest_subcomponent()#get the maximum sub_graph component
-		return max_sg.pop_penetration()
+		return max_sg.penetration()
 
 	def robustness(self):
 		max_sg = self.largest_subcomponent()#get the maximum sub_graph component
@@ -130,3 +144,29 @@ class SCNetwork(nx.Graph):
 				if self.SC_population(city_gh) >= 0.99*newest_pop:
 					city_ghs.append(city_gh)
 		return city_ghs
+
+	def expansion_utilities(self,util_params):
+		#store overall utility values of current network
+		expansion_nodes = self.SC_expansion_search()
+		newest_node = self.newest_node()
+		cur_con = self.connectivity()
+		cur_eff = self.efficiency()
+		cur_breadth = self.breadth()
+		cur_dens = self.density()
+		for node in expansion_nodes:
+			#this checks to see if the potential expansion nodes utility was previously calculated and if it is within connection distance of the last added node. If it is in the
+			#cache and not connected to the newest added node, the cached value of utilities is used. Otherwise, new utilities are calculated. This design forces this function to
+			#only work in an incrementally forward expansion search along the network. Otherwise, cache is stale and incorrect.
+			if node in list(self.expansion_cache.keys()) and geo_tools.get_close_ghs(node,[newest_node],2,346) == []:
+				pass #leave util dict for this node unchanged - ie. utilize the cached util values
+			else: #add node to network, calculate new incremental utilities and update cache dict
+				self.add_SC(node)
+				self.expansion_cache[node] = []
+				self.expansion_cache[node].append(self.connectivity() - cur_con)
+				self.expansion_cache[node].append(self.efficiency() - cur_eff)
+				self.expansion_cache[node].append(self.breadth() - cur_breadth)
+				self.expansion_cache[node].append(self.density() - cur_dens)
+				node_utility = np.array(self.expansion_cache[node])*np.array(util_params)
+				self.expansion_cache[node].append(sum(node_utility))
+				self.remove_node(node)
+		return self.expansion_cache

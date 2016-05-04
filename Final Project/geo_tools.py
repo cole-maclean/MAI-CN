@@ -10,6 +10,9 @@ config.read("config.ini")
 API_key = config['Keys']['google_API']
 gmaps = googlemaps.Client(key=API_key)
 
+with open("google_directions_cache.json","r") as f:
+    google_directions_cache = json.load(f)
+
 def load_pop_dict():
     with open('populations.json', 'r') as f:
         p_dict = json.load(f)
@@ -33,15 +36,26 @@ def haversine(lon1, lat1, lon2, lat2):
 def reverse_GPS(GPS):
     return [GPS[1],GPS[0]]
 
-def get_geohash_directions(gh_A,gh_B):   
-    GPS_A = geohash.decode(gh_A)
-    GPS_B = geohash.decode(gh_B) 
-    directions_result = gmaps.directions(GPS_A,
-                                         GPS_B,
-                                         mode="driving")
-    time.sleep(1)
-    return ({'distance':directions_result[0]['legs'][0]['distance']['value'],
-             'steps':len(directions_result[0]['legs'][0]['steps'])})
+def get_geohash_directions(gh_A,gh_B):
+    with open("google_directions_cache.json","r") as f:
+        google_directions_cache = json.load(f)
+    sorted_hashes = sorted([gh_A,gh_B])
+    connection_key = sorted_hashes[0] + sorted_hashes[1]
+    if connection_key in list(google_directions_cache.keys()):
+        connection_data = google_directions_cache[connection_key]
+    else:
+        GPS_A = geohash.decode(gh_A)
+        GPS_B = geohash.decode(gh_B) 
+        directions_result = gmaps.directions(GPS_A,
+                                             GPS_B,
+                                             mode="driving")
+        connection_data =({'distance':directions_result[0]['legs'][0]['distance']['value'],
+                           'steps':len(directions_result[0]['legs'][0]['steps'])})
+        google_directions_cache[connection_key] = connection_data
+        with open("google_directions_cache.json","w") as f:
+            google_directions_cache= json.dump(google_directions_cache,f)
+        time.sleep(1)
+    return connection_data
 
 def get_close_ghs(src_hash,lookup_hash_list,gh_precision,max_haversine):
     return [gh for gh in lookup_hash_list
