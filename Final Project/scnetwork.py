@@ -13,11 +13,13 @@ POP_DICT = geo_tools.load_pop_dict()
 sub_ghs = list(set([gh[0:3] for gh in list(POP_DICT.keys())]))
 sub_pop_dict = {sub_gh:sum([data['population'] for gh,data in POP_DICT.items() if gh[0:3] == sub_gh]) for sub_gh in sub_ghs}
 tot_pop = sum(list(sub_pop_dict.values()))
+major_cities = [city_gh for city_gh,data in POP_DICT.items() if data['population'] >= MAJOR_CITY_POP]
 
 class SCNetwork(nx.Graph):
 	def __init__(self,network_data=None):
 		nx.Graph.__init__(self,network_data)
 		self.expansion_cache = {}
+		self.expansion_city_ghs =[]
 
 	#Network Metadata
 	def newest_node(self):
@@ -132,17 +134,12 @@ class SCNetwork(nx.Graph):
 		return (len(max_sg)/G_area)*100 #denisty normalized to 1 SC for every 100km^2 in the network
 
 	def SC_expansion_search(self):
-		city_ghs =[]
-		newest_pop = self.node[self.newest_node()]['population']
-		G_sub_ghs = list(set([gh[0:3] for gh in self.nodes_iter()]))
-		#this will eliminate cities already in network, so 0 possibility of adding SC to the same city, which can be possible. May need to consider adding same city exceptions
-		major_cities = [city_gh for city_gh,data in POP_DICT.items() if data['population'] >= MAJOR_CITY_POP and city_gh[0:3] not in G_sub_ghs]
 		for node,data in self.nodes_iter(data=True):
-			unseen_major_cities = [city_gh for city_gh in major_cities if city_gh not in city_ghs]
+			unseen_major_cities = [city_gh for city_gh in major_cities if city_gh not in self.expansion_city_ghs]
 			close_city_ghs = geo_tools.get_close_ghs(node,unseen_major_cities,2,MAX_RANGE)
 			for city_gh in close_city_ghs:
-				city_ghs.append(city_gh)
-		return city_ghs
+				self.expansion_city_ghs.append(city_gh)
+		return self.expansion_city_ghs
 
 	def expansion_utilities(self,util_params):
 		#store overall utility values of current network
@@ -156,7 +153,7 @@ class SCNetwork(nx.Graph):
 			#this checks to see if the potential expansion nodes utility was previously calculated and if it is within connection distance of the last added node. If it is in the
 			#cache and not connected to the newest added node, the cached value of utilities is used. Otherwise, new utilities are calculated. This design forces this function to
 			#only work in an incrementally forward expansion search along the network. Otherwise, cache is stale and incorrect.
-			if node in list(self.expansion_cache.keys()) and geo_tools.get_close_ghs(node,[newest_node],2,346) == []:
+			if node in list(self.expansion_cache.keys()) and geo_tools.get_close_ghs(node,[newest_node],2,346) == [] and node not in self.nodes():
 				pass #leave util dict for this node unchanged - ie. utilize the cached util values
 			else: #add node to network, calculate new incremental utilities and update cache dict
 				self.add_SC(node)
