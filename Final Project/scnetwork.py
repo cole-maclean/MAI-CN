@@ -1,5 +1,5 @@
 MAX_RANGE = 346
-MAJOR_CITY_POP = 80000
+MAJOR_CITY_POP = 100000
 
 import networkx as nx
 import geo_tools
@@ -7,6 +7,7 @@ from operator import itemgetter
 import math
 import geohash
 import numpy as np
+import os
 
 POP_DICT = geo_tools.load_pop_dict()
 #generate list of unique geohash "squares" of size dictated by GH_PRECISION and use this to build dict of populations grouped by the unique geohash "squares"
@@ -134,16 +135,19 @@ class SCNetwork(nx.Graph):
 		return (len(max_sg)/G_area)*100 #denisty normalized to 1 SC for every 100km^2 in the network
 
 	def SC_expansion_search(self):
+		unseen_major_cities = [city_gh for city_gh in major_cities if city_gh not in self.expansion_city_ghs]
+		print ("unseen major cities = " + str(len(unseen_major_cities)))
 		for node,data in self.nodes_iter(data=True):
-			unseen_major_cities = [city_gh for city_gh in major_cities if city_gh not in self.expansion_city_ghs]
-			close_city_ghs = geo_tools.get_close_ghs(node,unseen_major_cities,2,MAX_RANGE)
+			close_city_ghs = set(geo_tools.get_close_ghs(node,unseen_major_cities,2,MAX_RANGE,100))
 			for city_gh in close_city_ghs:
-				self.expansion_city_ghs.append(city_gh)
+				if city_gh not in self.expansion_city_ghs:
+					self.expansion_city_ghs.append(city_gh)
 		return self.expansion_city_ghs
 
 	def expansion_utilities(self,util_params):
 		#store overall utility values of current network
-		expansion_nodes = self.SC_expansion_search()
+		expansion_nodes = [gh for gh in self.SC_expansion_search() if gh not in self]
+		print ("expansion search cities = " + str(len(expansion_nodes)))
 		newest_node = self.newest_node()
 		cur_con = self.connectivity()
 		cur_eff = self.efficiency()
@@ -153,16 +157,15 @@ class SCNetwork(nx.Graph):
 			#this checks to see if the potential expansion nodes utility was previously calculated and if it is within connection distance of the last added node. If it is in the
 			#cache and not connected to the newest added node, the cached value of utilities is used. Otherwise, new utilities are calculated. This design forces this function to
 			#only work in an incrementally forward expansion search along the network. Otherwise, cache is stale and incorrect.
-			if node in list(self.expansion_cache.keys()) and geo_tools.get_close_ghs(node,[newest_node],2,346) == [] and node not in self.nodes():
+			if node in list(self.expansion_cache.keys()) and geo_tools.get_close_ghs(node,[newest_node],2,346,0) == []:
 				pass #leave util dict for this node unchanged - ie. utilize the cached util values
 			else: #add node to network, calculate new incremental utilities and update cache dict
 				self.add_SC(node)
 				self.expansion_cache[node] = []
 				self.expansion_cache[node].append(self.connectivity() - cur_con)
 				self.expansion_cache[node].append(self.efficiency() - cur_eff)
-				self.expansion_cache[node].append(self.breadth() - cur_breadth)
+				#self.expansion_cache[node].append(self.breadth() - cur_breadth)
 				self.expansion_cache[node].append(self.density() - cur_dens)
-				self.expansion_cache[node].append(float(POP_DICT[node]['population'])/tot_pop) #added normalized city population to utilities matrix, can be used as tie breaker
 				node_utility = np.array(self.expansion_cache[node])*np.array(util_params)
 				self.expansion_cache[node].append(sum(node_utility))
 				self.remove_node(node)
