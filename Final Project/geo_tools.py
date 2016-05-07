@@ -5,14 +5,13 @@ import googlemaps
 import time
 import geohash
 import os
+import fasteners
 
 config = configparser.ConfigParser()
 config.read("config.ini")
 API_key = config['Keys']['google_API']
 gmaps = googlemaps.Client(key=API_key)
 
-with open("google_directions_cache.json","r") as f:
-    google_directions_cache = json.load(f)
 
 def load_pop_dict():
     with open('populations.json', 'r') as f:
@@ -37,20 +36,10 @@ def haversine(lon1, lat1, lon2, lat2):
 def reverse_GPS(GPS):
     return [GPS[1],GPS[0]]
 
+
 def get_geohash_directions(gh_A,gh_B):
     with open("google_directions_cache.json","r") as f:
-        try:
             google_directions_cache = json.load(f)
-        except ValueError:
-            print ("cache in use or corrupted")
-            GPS_A = geohash.decode(gh_A)
-            GPS_B = geohash.decode(gh_B) 
-            directions_result = gmaps.directions(GPS_A,
-                                                 GPS_B,
-                                                 mode="driving")
-            connection_data =({'distance':directions_result[0]['legs'][0]['distance']['value'],
-                               'steps':len(directions_result[0]['legs'][0]['steps'])})
-            return connection_data
     sorted_hashes = sorted([gh_A,gh_B])
     connection_key = sorted_hashes[0] + sorted_hashes[1]
     if connection_key in list(google_directions_cache.keys()):
@@ -64,13 +53,8 @@ def get_geohash_directions(gh_A,gh_B):
         connection_data =({'distance':directions_result[0]['legs'][0]['distance']['value'],
                            'steps':len(directions_result[0]['legs'][0]['steps'])})
         google_directions_cache[connection_key] = connection_data
-        while int(os.stat("google_directions_cache.json").st_size) == 0:
-            time.sleep(0.005)
         with open("google_directions_cache.json","w") as f:
-            try:
                 json.dump(google_directions_cache,f)
-            except ValueError:
-                print ("cache write failed...")
         time.sleep(1)
     return connection_data
 
@@ -79,3 +63,18 @@ def get_close_ghs(src_hash,lookup_hash_list,gh_precision,max_haversine,min_haver
                 if gh[0:gh_precision] in src_hash[0:gh_precision]
                 and haversine(*reverse_GPS(geohash.decode(src_hash)),*reverse_GPS(geohash.decode(gh))) <= max_haversine
                 and haversine(*reverse_GPS(geohash.decode(src_hash)),*reverse_GPS(geohash.decode(gh))) >= min_haversine]
+
+def get_gh_city(gh):
+    with open("google_geocity_cache.json","r") as f:
+            google_geocity_cache = json.load(f)
+    if gh in list(google_geocity_cache.keys()):
+         city = google_geocity_cache[gh]
+    else:
+        location = gmaps.reverse_geocode(geohash.decode(gh))
+        city = location[0]["address_components"][2]["long_name"]
+        time.sleep(1)
+        google_geocity_cache[gh] = city
+        with open("google_geocity_cache.json","w") as f:
+                json.dump(google_geocity_cache,f)
+        time.sleep(1)
+    return city
