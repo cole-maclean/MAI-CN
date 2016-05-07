@@ -1,5 +1,5 @@
 MAX_RANGE = 346
-MAJOR_CITY_POP = 60000
+MAJOR_CITY_POP = 50000
 PENETRATION_GH_PRECISION = 4
 
 import networkx as nx
@@ -138,14 +138,13 @@ class SCNetwork(nx.Graph):
 
 	def SC_expansion_search(self):
 		unseen_major_cities = [city_gh for city_gh in major_cities if city_gh not in self.expansion_city_ghs]
-		self.expansion_city_ghs = []
 		print ("unseen major cities = " + str(len(unseen_major_cities)))
 		for node,data in self.nodes_iter(data=True):
-			close_city_ghs = set(geo_tools.get_close_ghs(node,unseen_major_cities,2,MAX_RANGE,100))
+			close_city_ghs = set(geo_tools.get_close_ghs(node,unseen_major_cities,2,MAX_RANGE,150))
 			for city_gh in close_city_ghs:
 				G_sub_ghs = list(set([gh[0:PENETRATION_GH_PRECISION] for gh in self.nodes_iter()]))
 				penetrated_sub_ghs = list(set([gh for sub_gh in G_sub_ghs for gh in geohash.expand(sub_gh)]))
-				if city_gh not in self.expansion_city_ghs and city_gh[0:PENETRATION_GH_PRECISION] not in penetrated_sub_ghs:
+				if city_gh not in self.expansion_city_ghs and city_gh[0:PENETRATION_GH_PRECISION] not in penetrated_sub_ghs and city_gh not in self.nodes():
 					self.expansion_city_ghs.append(city_gh)
 		return self.expansion_city_ghs
 
