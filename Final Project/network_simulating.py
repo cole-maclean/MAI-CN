@@ -26,7 +26,6 @@ def simulate_networks(util_params,*args):
     start_node = len(network_seed)
     end_node = len(real_network)
     cached_networks = os.listdir("simulated_networks/")
-    print (cached_networks)
     file_name = str(start_node) + "_" + str(end_node) + "_" + "_".join([str(param) for param in util_params.tolist()]) + ".json"
     if file_name in cached_networks:
         with open("simulated_networks/" + file_name,"r") as f:
@@ -52,7 +51,7 @@ def network_similarity_score(ref_network,check_network):
 def build_network(seed_network,utility_params,network_length):
     now_start = datetime.datetime.now()
     start_node = len(seed_network)
-    for i in range(len(seed_network),network_length+1):
+    for i in range(len(seed_network),network_length):
         print ("sim network length = " + str(len(seed_network)))
         seed_network.expansion_utilities(utility_params)
         if seed_network.expansion_cache:
@@ -63,7 +62,6 @@ def build_network(seed_network,utility_params,network_length):
             print ("no expansion cities found at node " + str(i))
             return seed_network
         seed_network.add_SC(best_node)
-        seed_network.expansion_city_ghs.remove(best_node)
         del seed_network.expansion_cache[best_node]
     file_name = "simulated_networks/" + str(start_node) + "_" + str(len(seed_network)) + "_" + "_".join([str(param) for param in utility_params.tolist()]) + ".json"
     with open(file_name, 'w') as outfile:
@@ -81,7 +79,7 @@ if __name__ == '__main__':
     sub_graphs = current_network.all_sub_graphs()
     seed_net = scnetwork.SCNetwork(sub_graphs[180])
     test_net = scnetwork.SCNetwork(sub_graphs[210])
-    args= ([(simulate_networks,(slice(0,101,5),slice(1,2,1), slice(1,2,1)),(test_net,seed_net))])
+    args= ([(simulate_networks,(slice(0,101,20),slice(0,101,20), slice(0,101,20)),(test_net,seed_net))])
     # args= ([(simulate_networks,(slice(0,200,50),slice(0,200,50), slice(0,200,50)),(test_net,seed_net)),
     # (simulate_networks,(slice(200,400,50),slice(200,400,50), slice(200,400,50)),(test_net,seed_net)),
     # (simulate_networks,(slice(400,600,50),slice(400,600,50), slice(400,600,50)),(test_net,seed_net)),
