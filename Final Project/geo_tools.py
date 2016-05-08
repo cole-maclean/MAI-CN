@@ -58,11 +58,20 @@ def get_geohash_directions(gh_A,gh_B):
         time.sleep(1)
     return connection_data
 
-def get_close_ghs(src_hash,lookup_hash_list,gh_precision,max_haversine,min_haversine):
+def gh_expansion(seed_gh,exp_iters):
+    expansion_ghs = {0:[seed_gh]}
+    ghs = []
+    for i in range(1,exp_iters+1):
+        expansion_ghs[i] = []
+        for gh in expansion_ghs[i-1]:
+            expansion_ghs[i] = expansion_ghs[i] + geohash.expand(gh)
+            ghs = ghs + geohash.expand(gh)
+    return list(set(ghs))
+
+def get_close_ghs(src_hash,lookup_hash_list,gh_precision,exp_iterations,max_haversine):
     return [gh for gh in lookup_hash_list
-                if gh[0:gh_precision] in src_hash[0:gh_precision]
-                and haversine(*reverse_GPS(geohash.decode(src_hash)),*reverse_GPS(geohash.decode(gh))) <= max_haversine
-                and haversine(*reverse_GPS(geohash.decode(src_hash)),*reverse_GPS(geohash.decode(gh))) >= min_haversine]
+                if gh[0:gh_precision] in gh_expansion(src_hash[0:gh_precision],exp_iterations)
+                and haversine(*reverse_GPS(geohash.decode(src_hash)),*reverse_GPS(geohash.decode(gh))) <= max_haversine]
 
 def get_gh_city(gh):
     with open("google_geocity_cache.json","r") as f:
