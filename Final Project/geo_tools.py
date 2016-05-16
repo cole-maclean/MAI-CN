@@ -38,8 +38,20 @@ def reverse_GPS(GPS):
 
 
 def get_geohash_directions(gh_A,gh_B):
-    with open("google_directions_cache.json","r") as f:
+    try:
+        with open("google_directions_cache.json","r") as f:
             google_directions_cache = json.load(f)
+    except ValueError:
+        GPS_A = geohash.decode(gh_A)
+        GPS_B = geohash.decode(gh_B) 
+        directions_result = gmaps.directions(GPS_A,
+                                             GPS_B,
+                                             mode="driving")
+        connection_data =({'distance':directions_result[0]['legs'][0]['distance']['value'],
+                           'steps':len(directions_result[0]['legs'][0]['steps'])})
+        time.sleep(1)
+        print ("failed cache read")
+        return connection_data
     sorted_hashes = sorted([gh_A,gh_B])
     connection_key = sorted_hashes[0] + sorted_hashes[1]
     if connection_key in list(google_directions_cache.keys()):
@@ -69,9 +81,13 @@ def gh_expansion(seed_gh,exp_iters):
     return list(set(ghs))
 
 def get_close_ghs(src_hash,lookup_hash_list,gh_precision,exp_iterations,max_haversine):
-    return [gh for gh in lookup_hash_list
-                if gh[0:gh_precision] in gh_expansion(src_hash[0:gh_precision],exp_iterations)
-                and haversine(*reverse_GPS(geohash.decode(src_hash)),*reverse_GPS(geohash.decode(gh))) <= max_haversine]
+    exp_src_hash = gh_expansion(src_hash[0:gh_precision],exp_iterations)
+    if max_haversine == -1:
+        return [gh for gh in lookup_hash_list if gh[0:gh_precision] in exp_src_hash]
+    else:
+        return [gh for gh in lookup_hash_list
+                    if gh[0:gh_precision] in exp_src_hash
+                    and haversine(*reverse_GPS(geohash.decode(src_hash)),*reverse_GPS(geohash.decode(gh))) <= max_haversine]
 
 def get_gh_city(gh):
     with open("google_geocity_cache.json","r") as f:
@@ -80,7 +96,7 @@ def get_gh_city(gh):
          city = google_geocity_cache[gh]
     else:
         location = gmaps.reverse_geocode(geohash.decode(gh))
-        city = location[0]["address_components"][2]["long_name"]
+        city = location[0]["formatted_address"].split(",")[1]
         time.sleep(1)
         google_geocity_cache[gh] = city
         with open("google_geocity_cache.json","w") as f:
