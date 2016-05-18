@@ -44,7 +44,7 @@ div.tooltip {
            style="display: inline-block; width: 240px; text-align: right">
            Date = <span id="nDate-value">..</span>
     </label>
-    <input type="range" min="-35" max="15" id="nDate" step="1" vale="15">
+    <input type="range" min="-35" max="15" id="nDate" step="1" value="0">
   </p>
 
 <script src="//d3js.org/d3.v3.min.js"></script>
@@ -83,7 +83,6 @@ function draw(network_data){
       .attr("d", path);
 
   d3.select("#nDate")
-  .attr("value","15")
   .on("input", function() {
     update(+this.value);
   });
@@ -167,7 +166,7 @@ function draw(network_data){
 
     d3.json("world.json", draw_world)
     //initial draw call on page load
-    update("15");
+    update("0");
   };
 d3.json("final_network.json", draw)
 </script>
