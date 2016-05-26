@@ -86,6 +86,7 @@ def build_network(seed_network,utility_params,network_length):
     print(elapsedTime / timedelta(minutes=1))
     return seed_network
 
+
 if __name__ == '__main__':
     with open("simulated_networks/simulation_seed_15000_2_206.pickle", 'rb') as infile:
         seed_net = pickle.load(infile)
