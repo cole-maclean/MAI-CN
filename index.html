@@ -23,6 +23,15 @@
   stroke-width: .5px;
 }
 
+}
+#container {
+  margin:2%;
+  padding:20px;
+  border:2px solid #d0d0d0;
+  border-radius: 5px;
+}
+
+
 div.tooltip { 
     position: absolute;     
     text-align: center;     
@@ -37,7 +46,7 @@ div.tooltip {
 }
 
 </style>
-<body>
+<body onload="sizeChange()">
   <p>
     <a href="https://lab.beakernotebook.com/#/publications/6451bcd8-096e-11e6-8b45-2b70e59230e5">How It's Made</a>
     <label for="nDate" 
@@ -46,11 +55,20 @@ div.tooltip {
     </label>
     <input type="range" min="-35" max="15" id="nDate" step="1">
   </p>
+<div id="container"></div>
 
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script src="//d3js.org/topojson.v1.min.js"></script>
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>
 <script>
 
+var projection = d3.geo.mercator()
+    .center([80, 38])
+    .scale(500)
+    .rotate([-180,0]);
+
+d3.select(window)
+        .on("resize", sizeChange);
 // Define the div for the tooltip
 var div = d3.select("body").append("div") 
     .attr("class", "tooltip")       
@@ -59,23 +77,16 @@ var div = d3.select("body").append("div")
 //initial page load call
 function draw(network_data){
 
-    //page update function called after any changes
-  var width = 1300,
-      height = 600;
 
-  var projection = d3.geo.mercator()
-      .center([70, 48])
-      .scale(650)
-      .rotate([-180,0]);
 
   var path = d3.geo.path()
       .projection(projection);
 
   var graticule = d3.geo.graticule();
 
-  var svg = d3.select("body").append("svg")
-      .attr("width", width)
-      .attr("height", height);
+  var svg = d3.select("#container").append("svg")
+            .attr("width", "100%")
+            .append("g");
 
   svg.append("path")
       .datum(graticule)
@@ -184,10 +195,15 @@ function draw(network_data){
 
   d3.json("world.json", draw_world)
   //initial draw call on page load
+  sizeChange()
   animate()
 };
 
-
 d3.json("final_network.json", draw)
+
+function sizeChange() {
+    d3.select("g").attr("transform", "scale(" + $("#container").width()/900 + ")");
+    $("svg").height($("#container").width()*0.618);
+}
 </script>
 </body>
