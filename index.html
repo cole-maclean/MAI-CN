@@ -186,7 +186,7 @@ function draw(network_data){
       update(date_idx)
       date_idx++;
       date_slider.property({'value':date_idx})
-      if (date_idx >= indx_list.length) {
+      if (date_idx >= 15) {
         clearInterval(date_interval)
       }
     },500);
