@@ -78,7 +78,6 @@ var div = d3.select("body").append("div")
 function draw(network_data){
 
 
-
   var path = d3.geo.path()
       .projection(projection);
 
@@ -184,9 +183,9 @@ function draw(network_data){
     }
     var date_idx = -35;
     var date_interval = setInterval(function() {
-    date_slider.property({'value':date_idx})
       update(date_idx)
       date_idx++;
+      date_slider.property({'value':date_idx})
       if (date_idx >= indx_list.length) {
         clearInterval(date_interval)
       }
