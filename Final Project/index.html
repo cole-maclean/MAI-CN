@@ -82,11 +82,11 @@ function draw(network_data){
       .attr("class", "graticule")
       .attr("d", path);
 
-  d3.select("#nDate")
-  .attr("value","0")
-  .on("input", function() {
-    update(+this.value);
-  });
+  var date_slider = d3.select("#nDate")
+                    .attr("value","0")
+                    .on("input", function() {
+                      update(+this.value);
+                    });
 
     function update(date_index){
       date_index = parseInt(date_index,10) // convert string input to int for equality evaluations
@@ -166,11 +166,29 @@ function draw(network_data){
         .attr("class", "boundary")
         .attr("d", path);
     }
+    
+  function animate() {
+    var indx_list = [];
+    for (i=-35;i<=15;i++) {
+      indx_list.push(i)
+    }
+    var date_idx = 0;
+    var date_interval = setInterval(function() {
+      date_slider.attr("value",i)
+      update(date_inx)
+      date_idx++;
+      if (date_idx >= indx_list.length) {
+        clearInterval(date_interval)
+      }
+    },1000);
+  }
 
-    d3.json("world.json", draw_world)
-    //initial draw call on page load
-    update(0);
-  };
+  d3.json("world.json", draw_world)
+  //initial draw call on page load
+  animate()
+};
+
+
 d3.json("final_network.json", draw)
 </script>
 </body>
