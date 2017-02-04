@@ -1,5 +1,6 @@
 ### Config Files ###
 *.ini
+*.bkr
 
 ###Datasets###
 CA.txt

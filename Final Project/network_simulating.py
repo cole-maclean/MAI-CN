@@ -45,11 +45,16 @@ def network_similarity_score(ref_network,check_network):
     matched_nodes = []
     ref_network_length = len(ref_network)
     for ref_node,ref_data in ref_network.nodes_iter(data=True):
+        node_limiter = 0
         for check_node,check_data in check_network.nodes_iter(data=True):
-            if ref_node[0:4] in geo_tools.gh_expansion(check_node[0:4],2):#check if simulated geohash with geohash twice expanded of precision 4 , if true add to score
-                score = score + 1.0/ref_network_length
-                matched_nodes.append(check_node)
-                break 
+            if node_limiter < ref_network_length:
+                if ref_node[0:4] in geo_tools.gh_expansion(check_node[0:4],2):#check if simulated geohash with geohash twice expanded of precision 4 , if true add to score
+                    score = score + 1.0/ref_network_length
+                    matched_nodes.append(check_node)
+                    break
+                node_limiter = node_limiter + 1 
+            else:
+                break      
     return score,matched_nodes
 
 def build_network(seed_network,utility_params,network_length):
@@ -87,34 +92,34 @@ def build_network(seed_network,utility_params,network_length):
     return seed_network
 
 
-if __name__ == '__main__':
-    with open("simulated_networks/simulation_seed_15000_2_206.pickle", 'rb') as infile:
-        seed_net = pickle.load(infile)
-    with open("network.json","r") as f:
-        network_data = json.load(f)
-        G = json_graph.node_link_graph(network_data)
-    #current_network = scnetwork.SCNetwork(G)
-    #sub_graphs = current_network.all_sub_graphs()
-    #seed_net = scnetwork.SCNetwork(sub_graphs[205])
-    test_net = scnetwork.SCNetwork(G)
-    #test_net = current_network
-    args= ([(simulate_networks,(slice(0.8,0.81,0.01),slice(0.22,0.23,0.01)),(test_net,seed_net))])
-    #args= ([(simulate_networks,(slice(0,0.1001,0.005),slice(0,101,5)),(test_net,seed_net))])
-    # args= ([(simulate_networks,(slice(0,200,50),slice(0,200,50), slice(0,200,50)),(test_net,seed_net)),
-    # (simulate_networks,(slice(200,400,50),slice(200,400,50), slice(200,400,50)),(test_net,seed_net)),
-    # (simulate_networks,(slice(400,600,50),slice(400,600,50), slice(400,600,50)),(test_net,seed_net)),
-    # (simulate_networks,(slice(600,800,50),slice(600,800,50), slice(600,800,50)),(test_net,seed_net)),
-    # (simulate_networks,(slice(800,1000,50),slice(800,1000,50), slice(800,1000,50)),(test_net,seed_net)),
-    # (simulate_networks,(slice(1000,1200,50),slice(1000,1200,50), slice(1000,1200,50)),(test_net,seed_net))])
-    p = Pool(1)
-    res = (p.map(minimize,args))
-    final_results = []
-    for thrd in res:
-        grid = thrd[2]
-        results = thrd[3]
-        result_stack = np.stack([*grid, results], -1).reshape(int(len(grid.flatten())/2),-1)
-        print (result_stack)
-        with open("sim_grid_results.csv",'ba') as f:
-            np.savetxt(f,result_stack)
+# if __name__ == '__main__':
+#     with open("simulated_networks/simulation_seed_15000_2_206.pickle", 'rb') as infile:
+#         seed_net = pickle.load(infile)
+#     with open("network.json","r") as f:
+#         network_data = json.load(f)
+#         G = json_graph.node_link_graph(network_data)
+#     #current_network = scnetwork.SCNetwork(G)
+#     #sub_graphs = current_network.all_sub_graphs()
+#     #seed_net = scnetwork.SCNetwork(sub_graphs[205])
+#     test_net = scnetwork.SCNetwork(G)
+#     #test_net = current_network
+#     args= ([(simulate_networks,(slice(0.8,0.81,0.01),slice(0.22,0.23,0.01)),(test_net,seed_net))])
+#     #args= ([(simulate_networks,(slice(0,0.1001,0.005),slice(0,101,5)),(test_net,seed_net))])
+#     # args= ([(simulate_networks,(slice(0,200,50),slice(0,200,50), slice(0,200,50)),(test_net,seed_net)),
+#     # (simulate_networks,(slice(200,400,50),slice(200,400,50), slice(200,400,50)),(test_net,seed_net)),
+#     # (simulate_networks,(slice(400,600,50),slice(400,600,50), slice(400,600,50)),(test_net,seed_net)),
+#     # (simulate_networks,(slice(600,800,50),slice(600,800,50), slice(600,800,50)),(test_net,seed_net)),
+#     # (simulate_networks,(slice(800,1000,50),slice(800,1000,50), slice(800,1000,50)),(test_net,seed_net)),
+#     # (simulate_networks,(slice(1000,1200,50),slice(1000,1200,50), slice(1000,1200,50)),(test_net,seed_net))])
+#     p = Pool(1)
+#     res = (p.map(minimize,args))
+#     final_results = []
+#     for thrd in res:
+#         grid = thrd[2]
+#         results = thrd[3]
+#         result_stack = np.stack([*grid, results], -1).reshape(int(len(grid.flatten())/2),-1)
+#         print (result_stack)
+#         with open("sim_grid_results.csv",'ba') as f:
+#             np.savetxt(f,result_stack)
 
 
